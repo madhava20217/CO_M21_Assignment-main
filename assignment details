@@ -1,0 +1,56 @@
+read from stdin and write to stdout
+3 parts for assembler: 
+    errorGen: error testing
+    simpleBin: simple cases for binary generation
+    hardgen: hard test cases
+
+16 bit isa: 16 bit output binary
+7 general purpose registers and one flag register for compare; 3 bit reg encoding
+6 encoding types:
+    A; add, sub, mul, xor, or, and          of type <instr> reg1 reg2 reg 3: 
+                                            first operand = reg2 and second operand = reg3
+                                            storage location reg1.
+    B; mov, rs, ls                          of type <instr> reg1 $imm where imm is 8 bit
+    C; mov, div, not, cmp                   of type <instr> reg1 reg2
+                                            for mov: reg1 is the destination and reg2 is src
+                                            for div: R0 has quotient and R1 has remainder
+                                            for not: bitwise not of reg2 stored in reg1
+                                            for cmp: compares reg1 and reg1 and sets up flag
+    D; load, stored                         of type <instr> reg1 mem_addr
+                                            load loads data from mem_adder into reg1
+                                            store stores data from reg1 to mem_addr
+    E; jmp, jlt, jgt, je                    of type <instr> mem_addr:
+                                            goes to mem addr depending on flags
+    F; hlt                                  no operand: just complete halt of program exec
+
+    
+    
+    double byte addressable 
+    only whole numbers, no floating point, if negative sub, set reg to 0
+    R0, R1, R2... R6 and FLAGS, 16 bits wide registers
+
+    mov reg $imm moves 8 bit imm to reg's lower 8 bits, upper bits zero
+
+    FLAGS: first 12 bits unused
+        1. overflow V (3rd bit from right)
+        2. less than: (2nd)
+        3. greater than (1st)
+        4. equal(0th bit from right)
+
+    only instruction using FLAGS = mov reg1 FLAGS
+    cmp can implicitly write to FLAGS
+    conditional jump can implicitly read FLAGS
+
+encoding types: (page 8)
+
+    1. A: 5 bit op, 2 unused, 3 reg1, 3 reg2, 3 reg3
+    2. B: 5 op, 3 reg1, 8 imm
+    3. C: 5 op, 5 unused, 3 reg1, 3 reg2
+    4. D: 5 op, 3 reg, 8 mem
+    5. E: 5 op, 3 unused, 8 mem
+    6. F: 5 bit op, 11 unused
+
+R0 000, R1 001... FLAGS 111
+
+last instruction: hlt, only one hlt
+
