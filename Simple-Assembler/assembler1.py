@@ -11,7 +11,30 @@ var = dict()
 
 
 
+# takes in s(string) and size(int) returns binary string of size size
+def toBinary(s,size):
+    ans = ""
+    if(s.isnumeric()):
+        s = int(s) 
+    else:
+        return "Invalid syntax"
+    while(s > 0):
+        if(s % 2 == 0):
+            ans = "0" + ans;
+        else:
+            ans = "1" + ans;
+        s = s//2
 
+    if(len(ans)==size):
+        return ans;
+    elif(len(ans) < size):
+        while(len(ans) != size):
+            ans = "0" + ans
+        return ans
+    else:
+        ans = ans[len(ans) - size:]
+        return ans
+    
 
 
 
@@ -79,3 +102,7 @@ def validVarInstruction(ins):
     ''' add mechanism to give value to var as well (depending on program size) '''
     var[ins[1]] = 1
     return true
+
+def isValidVar(ins):
+    global var
+    return (ins in var.keys())
