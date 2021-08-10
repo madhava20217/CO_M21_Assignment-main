@@ -5,6 +5,8 @@ instructionDictA = {'add': '00000', 'sub': '00001', 'mul': '00110', 'xor': '0101
 global regDict
 regDict = {'R0':'000', 'R1': '001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110', 'FLAGS':'111'}
 
+global var 
+var = dict()
 
 
 
@@ -58,3 +60,22 @@ def isValidReg(reg):
     '''except flag'''
     regDictA = {'R0':'000', 'R1': '001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110'}
     return (reg in regDictA.keys())
+
+
+
+#is valid variable instruction, returns boolean if the instructions is a valid var function 
+def validVarInstruction(ins):
+    ins = ins.split()
+    if(len(ins) != 2) return false
+    if(ins[0] != 'var') return false 
+    if(ins[1] in regDict.keys()) return false
+    if(ins[1] in instructionDictA.keys()) return false 
+    ''' add more dict check here once they are declared above '''
+    #check if it is alphanum or has underscores:
+    for ch in ins[1]:
+        if(ch.isalnum() or (ch == '_')) continue
+        else return false
+    global var
+    ''' add mechanism to give value to var as well (depending on program size) '''
+    var[ins[1]] = 1
+    return true
