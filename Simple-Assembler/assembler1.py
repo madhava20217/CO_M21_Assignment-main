@@ -98,7 +98,12 @@ def validVarInstruction(ins):
     if(len(ins) != 2) return false
     if(ins[0] != 'var') return false 
     if(ins[1] in regDict.keys()) return false
+    if(ins[1] in var.keys()) return false #multiple declaration of single variable
     if(ins[1] in instructionDictA.keys()) return false 
+    if(ins[1] in instructionDictB.keys()) return false 
+    if(ins[1] in instructionDictC.keys()) return false 
+    if(ins[1] in instructionDictD.keys()) return false
+    if(ins[1] in instructionDictE.keys()) return false 
     ''' add more dict check here once they are declared above '''
     #check if it is alphanum or has underscores:
     for ch in ins[1]:
