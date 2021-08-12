@@ -1,6 +1,8 @@
 global instructionDictA
 instructionDictA = {'add': '00000', 'sub': '00001', 'mul': '00110', 'xor': '01010', 'or': '01011', 'and':'01100'}
 
+global instructionDictD
+instructionDictD = {'ld': '00100', 'st':'00101'}
                         
 global regDict
 regDict = {'R0':'000', 'R1': '001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110', 'FLAGS':'111'}
@@ -106,6 +108,44 @@ def validVarInstruction(ins):
 def isValidVar(ins):
     global var
     return (ins in var.keys())
+
+def isValidTypeD(ins):
+    #takes in string and finds out if type matches or no
+    x = ins.split()
+    if len(x) != 3:
+        return False
+    return (ins[0] in instructionDictD.keys())
+
+def typeDInstruction(ins):
+    '''assumes ins is of type D, 
+    Takes in string argument and returns its corresponding binary string
+    returns error if the registers or memory address are invalid
+
+    types of error:
+    use of undefined variable address 
+    misuse of labels as variables
+    Illegal use of flag register '''
+    ins = ins.split()
+    binary = instructionDictD[ins[0]]
+    if (ins[1] == "FLAG"):
+        #error invalid register
+        return "Illegal use of flag register"
+    elif(isValidReg(ins[1]) == False):
+        return "Typo in register name"
+    else:
+        binary = binary + regDict[ins[1]]
+    
+    if(ins[2] in label.keys()):
+        return "Misuse of labels as variables"
+    elif(isValidVar(ins[2]) == False):
+        return "Use of undefined Variable address"
+    else:
+        binary = binary + var[ins[2]]
+
+    return binary
+
+
+
 
 
 def typeFInstruction(ins, numberHalts = True):
