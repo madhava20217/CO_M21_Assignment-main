@@ -5,7 +5,7 @@ instructionDictA = {'add': '00000', 'sub': '00001', 'mul': '00110', 'xor': '0101
 global regDict
 regDict = {'R0':'000', 'R1': '001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110', 'FLAGS':'111'}
 
-
+label_dict = {}
 
 
 
@@ -117,7 +117,7 @@ def valid_immediate(immediate):
             return False
     else:
         return False
-def valid_label(label,label_dict):
+def valid_label(label):
     if label in label_dict:
         return True
     else:
