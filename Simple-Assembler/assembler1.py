@@ -106,3 +106,16 @@ def validVarInstruction(ins):
 def isValidVar(ins):
     global var
     return (ins in var.keys())
+
+
+def typeFInstruction(ins, numberHalts = True):
+    '''Takes in string argument and returns its corresponding binary.
+    Optional: can also raise an error depending on the boolean value numberHalts
+    
+    Operands:
+        1. String ins for the instruction
+        2. boolean numberHalts which checks if the number of halts are not >1, default value is true'''
+    if(not numberHalts):
+        raise SyntaxError("hlt not being used as the last instruction.")
+    if(ins.strip() == 'hlt'):
+        return "10011"+11*'0'
