@@ -41,9 +41,6 @@ def toBinary(s,size):
         ans = ans[len(ans) - size:]
         return ans
     
-
-
-
 def typeAInstruction(x):
     '''Takes in input for type A instruction, tests if it is valid 
     and returns the corresponding binary code for the instruction
@@ -72,8 +69,6 @@ def typeAInstruction(x):
         
     else: raise SyntaxError("General Syntax Error")
 
-
-
 def isValidType(operationArr):
     '''takes in array argument and determines if it is a valid type A 
     syntax'''
@@ -84,13 +79,10 @@ def isValidType(operationArr):
         if(!isValidReg(operationArr[1])): return False
     return True
 
-
 def isValidReg(reg):
     '''except flag'''
     regDictA = {'R0':'000', 'R1': '001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110'}
     return (reg in regDictA.keys())
-
-
 
 #is valid variable instruction, returns boolean if the instructions is a valid var function 
 def validVarInstruction(ins):
@@ -179,10 +171,6 @@ def typeEInstruction(line):
         binary = binary + label_dict[ins[1]] 
     
     return binary
-
-
-
-
 
 def typeFInstruction(ins, numberHalts = True):
     '''Takes in string argument and returns its corresponding binary.
