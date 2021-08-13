@@ -27,7 +27,7 @@ instructionDictC = {'mov':'00011','not':'01101','cmp':'01110'}
 global regDict
 regDict = {'R0':'000', 'R1': '001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110', 'FLAGS':'111'}
 
-global var
+global var_dict
 var_dict = dict()
 global label_dict
 label_dict = {}
