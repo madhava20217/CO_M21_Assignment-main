@@ -102,20 +102,16 @@ def validVarInstruction(ins,location):
     if(ins[0] != 'var'): return False
     if(ins[1] in regDict.keys()): return False
     if(ins[1] in var.keys()): return False #multiple declaration of single variable
-    if(ins[1] in instructionDictA.keys()): return False
-    if(ins[1] in instructionDictB.keys()): return False
-    if(ins[1] in instructionDictC.keys()): return False
-    if(ins[1] in instructionDictD.keys()): return False
-    if(ins[1] in instructionDictE.keys()): return False
+    if(ins[1] in operandslist): return False
     ''' add more dict check here once they are declared above '''
     #check if it is alphanum or has underscores:
     for ch in ins[1]:
         if(ch.isalnum() or (ch == '_')): continue
-        else: return false
+        else: return False
     global var
     ''' add mechanism to give value to var as well (depending on program size) '''
     var[ins[1]] = toBinary(location,8)
-    return true
+    return True
 
 def isValidVar(ins):
     global var
