@@ -313,7 +313,7 @@ def main():
     #working with variables:
     i = 0
     while(i < len(input_arr)):
-        x = input_arr[i].split
+        x = input_arr[i].split()
         if(x[0] != "var"): break
         i+=1;
     
