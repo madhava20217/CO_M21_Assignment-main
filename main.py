@@ -5,7 +5,6 @@ global variablearr          #list of variables
 global otherarr             #list of instructions, elements are 1D arrays
 global labelarr             #list of labels, elements are 1D arrays
 global operandsdict         #dictionary of operands
-global 
 
 variablearr = []    #stores variables declared, which are memory locations, elements are strings
 otherarr = []       #stores stuff besides variables, elements are 1D array elements
