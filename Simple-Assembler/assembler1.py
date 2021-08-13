@@ -338,7 +338,9 @@ def main():
 
     memaddresscount = 0     #counts the memory address/instruction number
 
-    input_arr = [];
+    line_no = []
+    ctr = 1
+    input_arr = []
 
     for line in stdin:
         
@@ -350,7 +352,9 @@ def main():
             if(line == ""):
                 continue
             else:
-                input_arr.append(line);
+                input_arr.append(line)
+                line_no.append(ctr)
+                ctr = ctr+1
             
 
     #working with variables:
@@ -362,12 +366,14 @@ def main():
     
     var_arr = input_arr[0:i] 
     input_arr = input_arr[i:]
+    var_line_no = line_no[0:i]
+    line_no = line_no[i:]
 
     var_loc = len(input_arr)
     for i in range(0 , len(var_arr)):
         check = validVarInstruction(var_arr[i],var_loc+i)
         if(check == False):
-            raise Exception("Unsupported variable name format at line %d", i)
+            raise Exception("Unsupported variable name format at line %d", var_line_no[i])
     #variables processed
     #Checking for labels and removing them from the instruction line if found
     for i in range(0,len(input_arr)):
@@ -381,7 +387,7 @@ def main():
                 input_arr[i] = input_arr[i][len(instruction[0] + 1)]
                 input_arr[i] = input_arr[i].strip()
             else:
-                raise SyntaxError("General Syntax Error")
+                raise SyntaxError("General Syntax Error at line %d", line_no[i])
     #Labels processed
 
     
