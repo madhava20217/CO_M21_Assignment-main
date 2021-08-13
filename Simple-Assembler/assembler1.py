@@ -4,7 +4,6 @@ from sys import stdin
 global linenumber           #line number of currently executing statement
 global variablearr          #list of variables
 global otherarr             #list of instructions, elements are 1D arrays
-global labelarr             #list of labels, elements are 1D arrays
 global operandsdict         #dictionary of operands
 
 operandslist = ['add', 'sub', 'mov', 'ld', 'st', 'mul', 'div', 'rs', 'ls', 'xor', 'or', 'and',
@@ -145,7 +144,6 @@ def validVarInstruction(ins,location):
     ''' add mechanism to give value to var as well (depending on program size) '''
     var[ins[1]] = toBinary(location,8)
     return True
-
 def isValidVar(ins):
     global var
     return (ins in var.keys())
@@ -282,7 +280,7 @@ def isValidImmediate(immediate):
             return False
     else:
         return False
-def isValidLabel(label):
+def CheckValidLabel(label):
     if label in label_dict:
         return True
     else:
@@ -309,7 +307,21 @@ def isValidTypeC(instruction):
         return True
     else:
         return False
-
+def validLabel(label_name):
+    if label_name in regDict.keys(): 
+        return False
+    #change name of var_dict
+    elif label_name in var_dict: 
+        return False
+    elif label_name in operandslist:
+        return False
+    elif label_name in label_dict:
+        return False
+    else:
+        for letter in label_name:
+            if (not letter.isalnum() and letter != '_'):
+                return False
+        return True
 def main():
     '''The main function for the CO assignment "Winter" 2021'''
 
@@ -345,25 +357,22 @@ def main():
     input_arr = input_arr[i:]
 
     var_loc = len(input_arr)
-    for i in range(0 : len(var_arr)):
+    for i in range(0 , len(var_arr)):
         check = validVarInstruction(var_arr[i],var_loc+i)
         if(check == False):
             raise Exception("Unsupported variable name format at line %d", i)
     #variables processed
+    #Checking for labels and removing them from the instruction line if found
     for i in range(0,len(input_arr)):
         instruction = input_arr.split();
         if(instruction[0][-1] == ":"):
             flag = 1;
             instruction[0] = instruction[0][:len(instruction[0]) - 1]
-            if instruction[0] not in label_dict:
-                for letter in instruction[0]:
-                    if (not letter.isalnum() and letter != '_'):
-                        flag = 0
-                        break
-            else:
-                raise SyntaxError("General Syntax Error")
-            if flag == 1:
-                label_dict[instruction[0]] = i
+            if(validLabel(instruction[0])):
+                temp = bin(i)[2:]
+                label_dict[instruction[0]] = "{:08d}".format(int(temp))
                 input_arr[i] = input_arr[i][len(instruction[0] + 1)]
                 input_arr[i] = input_arr[i].strip()
-
+            else:
+                raise SyntaxError("General Syntax Error")
+    #Labels processed
