@@ -28,7 +28,7 @@ global regDict
 regDict = {'R0':'000', 'R1': '001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110', 'FLAGS':'111'}
 
 global var
-var = dict()
+var_dict = dict()
 global label_dict
 label_dict = {}
 
@@ -113,7 +113,7 @@ def isValidTypeA(operationArr):
     for i in range(1, 4):                                                   #checking operands
         tempReg = operationArr[i].strip()
         if(tempReg not in regDict.keys()):                          #if it is not in the list of registers, three cases ensue
-            if(tempReg in vars.keys()):                                     #it is a variable
+            if(tempReg in var_dict.keys()):                                     #it is a variable
                 raise Exception("Wrong syntax used for instructions at line: %d", linenumber)
             if(tempReg in label_dict.keys()):
                 raise Exception("Wrong syntax used for instructions at line: %d", linenumber)
@@ -128,26 +128,26 @@ def isValidTypeA(operationArr):
 
 
 #is valid variable instruction, returns boolean if the instructions is a valid var function 
-#along with updating var dictionary
+#along with updating var_dict dictionary
 def validVarInstruction(ins,location):
     ins = ins.split()
     if(len(ins) != 2): return False
     if(ins[0] != 'var'): return False
     if(ins[1] in regDict.keys()): return False
-    if(ins[1] in var.keys()): return False #multiple declaration of single variable
+    if(ins[1] in var_dict.keys()): return False #multiple declaration of single variable
     if(ins[1] in operandslist): return False
     ''' add more dict check here once they are declared above '''
     #check if it is alphanum or has underscores:
     for ch in ins[1]:
         if(ch.isalnum() or (ch == '_')): continue
         else: return False
-    global var
+    global var_dict
     ''' add mechanism to give value to var as well (depending on program size) '''
-    var[ins[1]] = "{.08d}".format(location)
+    var_dict[ins[1]] = "{.08d}".format(location)
     return True
 def isValidVar(ins):
-    global var
-    return (ins in var.keys())
+    global var_dict
+    return (ins in var_dict.keys())
 
 def isValidTypeD(ins):
     #takes in string and finds out if type matches or no
@@ -186,7 +186,7 @@ def typeDInstruction(line):
     elif(isValidVar(ins[2]) == False):
         raise Exception("Use of undefined Variable address at line: %d", linenumber)
     else:
-        binary = binary + var[ins[2]]
+        binary = binary + var_dict[ins[2]]
 
     return binary
 
