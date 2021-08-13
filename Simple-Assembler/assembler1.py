@@ -167,7 +167,7 @@ def typeDInstruction(line):
     Illegal use of flag register '''
     ins = line.split()
     binary = instructionDictD[ins[0]]
-    if (ins[1] == "FLAG"):
+    if (ins[1] == "FLAGS"):
         #error invalid register
         raise Exception("Illegal use of flag register at line: %d", linenumber)
     elif(isValidVar(ins[1]) == True):
