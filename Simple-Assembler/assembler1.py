@@ -27,7 +27,7 @@ instructionDictC = {'mov':'00011','not':'01101','cmp':'01110'}
 global regDict
 regDict = {'R0':'000', 'R1': '001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110', 'FLAGS':'111'}
 
-global var
+global var_dict
 var_dict = dict()
 global label_dict
 label_dict = {}
@@ -167,7 +167,7 @@ def typeDInstruction(line):
     Illegal use of flag register '''
     ins = line.split()
     binary = instructionDictD[ins[0]]
-    if (ins[1] == "FLAG"):
+    if (ins[1] == "FLAGS"):
         #error invalid register
         raise Exception("Illegal use of flag register at line: %d", linenumber)
     elif(isValidVar(ins[1]) == True):
@@ -366,7 +366,9 @@ def main():
 
     memaddresscount = 0     #counts the memory address/instruction number
 
-    input_arr = [];
+    line_no = []
+    ctr = 1
+    input_arr = []
 
     for line in stdin:
         
@@ -378,7 +380,9 @@ def main():
             if(line == ""):
                 continue
             else:
-                input_arr.append(line);
+                input_arr.append(line)
+                line_no.append(ctr)
+                ctr = ctr+1
             
 
     #working with variables:
@@ -390,12 +394,14 @@ def main():
     
     var_arr = input_arr[0:i] 
     input_arr = input_arr[i:]
+    var_line_no = line_no[0:i]
+    line_no = line_no[i:]
 
     var_loc = len(input_arr)
     for i in range(0 , len(var_arr)):
         check = validVarInstruction(var_arr[i],var_loc+i)
         if(check == False):
-            raise Exception("Unsupported variable name format at line %d", i)
+            raise Exception("Unsupported variable name format at line %d", var_line_no[i])
     #variables processed
     #Checking for labels and removing them from the instruction line if found
     for i in range(0,len(input_arr)):
@@ -409,5 +415,58 @@ def main():
                 input_arr[i] = input_arr[i][len(instruction[0] + 1)]
                 input_arr[i] = input_arr[i].strip()
             else:
-                raise SyntaxError("General Syntax Error")
+                raise SyntaxError("General Syntax Error at line %d", line_no[i])
     #Labels processed
+
+    
+    #generating list consisting of output commands and to take care of the exceptions that may occur
+    #feeding functions input and collecting outputs:
+
+    #inputs: input_arr, var
+
+    memaddresscount = 0         #memory address initialised
+    output_list = []            #list for storing the output binary, each element is a 16-bit binary number
+    haltFlag = False
+
+    #handling last element not halt exception
+    if(input_arr[-1].strip() != 'hlt'):
+        raise Exception("hlt not being used as the last instruction at line: %d", memaddresscount)
+
+    while(memaddresscount<len(input_arr)):
+        if(input_arr[memaddresscount].strip() == 'hlt'):
+            if(haltFlag): raise Exception("hlt not being used as the last instruction at line: %d", memaddresscount)
+            else: haltFlag = True
+
+        #for other instructions
+        #6 categories: instr is a temporary variable for easier processing
+        instr = input_arr[memaddresscount]
+        instr.strip().split()
+        
+        if(instr[0] in instructionDictA.keys()):
+            output_list.append(typeAInstruction(input_arr[memaddresscount]))
+        
+        elif(instr[0] in instructionDictB.keys()):
+            output_list.append(typeBInstruction(input_arr[memaddresscount]))
+
+        elif(instr[0] in instructionDictC.keys()):
+            output_list.append(typeCInstruction(input_arr[memaddresscount]))
+        
+        elif(instr[0] in instructionDictD.keys()):
+            output_list.append(typeDInstruction(input_arr[memaddresscount]))
+        
+        elif(instr[0] in instructionDictE.keys()):
+            output_list.append(typeEInstruction(input_arr[memaddresscount]))
+
+        elif(instr[0] == 'hlt'):
+            output_list.append(typeFInstruction(input_arr[memaddresscount]), haltflag)
+        
+        else:
+            raise Exception("Typos in instruction name or register name at memory location: %d", memaddresscount)
+
+
+
+        memaddresscount+=1      #incrementing memaddresscount for the next iteration
+
+    #printing out to STDOUT
+    for i in output_list:
+        print(i)
