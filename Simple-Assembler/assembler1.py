@@ -1,6 +1,7 @@
 from sys import stdin
 
 #global variables:
+global linenumber           #line number of currently executing statement
 global variablearr          #list of variables
 global otherarr             #list of instructions, elements are 1D arrays
 global labelarr             #list of labels, elements are 1D arrays
@@ -52,6 +53,9 @@ def toBinary(s,size):
         ans = ans[len(ans) - size:]
         return ans
     
+
+
+
 def typeAInstruction(x):
     '''Takes in input for type A instruction, tests if it is valid
     and returns the corresponding binary code for the instruction
@@ -63,37 +67,59 @@ def typeAInstruction(x):
         3. isValidReg: checks if register is valid.
     '''
     x = x.split()
-    if(isValidTypeA(x)):
+    res = isValidTypeA(x)
+    if(res):
         binary = ''
 
         #accounting for the op-code
-        if(x[0] in instructionDictA.keys()): binary+=instructionDictA(x[0]);
+        if(x[0] in instructionDictA.keys()): binary+=instructionDictA(x[0])
 
-        if(isValidReg(x[1]) and isValidReg(x[2]) and isValidReg(x[3])):
-            binary+= regDict(x[1]) + regDict(x[2]) + regDict(x[3])
+        #checking operand types:
+        op1 = x[1]      #defining first operand
+        op2 = x[2]      #defining second operand
+        op3 = x[3]      #defining third operand
+
+        binary+= regDict(op1) + regDict(op2) + regDict(op3)
 
         if(len(binary) == 16): return binary
-        else: raise SyntaxError("Typos in instruction or register name")
+        else: raise SyntaxError("General Syntax Error at line %d", linenumber)
 
+    else: return None
 
-
-
-    else: raise SyntaxError("General Syntax Error")
-
-def isValidType(operationArr):
+def isValidTypeA(operationArr):
     '''takes in array argument and determines if it is a valid type A
-    syntax'''
+    syntax
+    
+    Takes into account, the following exceptions:
+    1. Typos in instruction name or register name.                                                  DONE
+    2. Illegal use of FLAGS register                                                                DONE
+    3. Wrong syntax used for instructions (~add instruction being used as a type B instruction)     DONE
+    
+    For the third part, mainly taking care of the nature of operands.'''
 
-    if(len(operationArr) != 4): return False
-    if(operationArr[0] not in instructionDictA): return False
-    for i in range(1, 4):
-        if(not isValidReg(operationArr[1])): return False
+    if(len(operationArr) != 4):                                             #if length is not equal to 4, which is the length of typeA
+        raise SyntaxError("General Syntax Error at line: %d", linenumber)
+        return False
+    
+    if(operationArr[0].strip() not in instructionDictA.keys()):                            #if instruction not in typeA list
+        return False
+
+    for i in range(1, 4):                                                   #checking operands
+        tempReg = operationArr[i].strip()
+        if(tempReg not in regDict.keys()):                          #if it is not in the list of registers, three cases ensue
+            if(tempReg in vars.keys()):                                     #it is a variable
+                raise Exception("Wrong syntax used for instructions at line: %d", linenumber)
+            if(tempReg in label_dict.keys()):
+                raise Exception("Wrong syntax used for instructions at line: %d", linenumber)
+            if(tempReg[0] == '$'):
+                raise Exception("Wrong syntax used for instructions at line: %d", linenumber)
+            else:
+                raise Exception("Wrong syntax used for instructions at line: %d", linenumber)
+        if(tempReg == "FLAGS"):                                         #if it is the FLAGS register
+                raise Exception("Illegal use of FLAGS register at line: %d", linenumber)
+            
     return True
 
-def isValidReg(reg):
-    '''checks for all valid registers except flag'''
-    regDictA = {'R0':'000', 'R1': '001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110'}
-    return (reg in regDictA.keys())
 
 #is valid variable instruction, returns boolean if the instructions is a valid var function 
 def validVarInstruction(ins,location):
@@ -185,11 +211,18 @@ def typeFInstruction(ins, numberHalts = True):
 
     Operands:
         1. String ins for the instruction
-        2. boolean numberHalts which checks if the number of halts are not >1, default value is true'''
+        2. boolean numberHalts which checks if the number of halts are not >1, default value is true
+        
+    Possible Errors:
+    1. Wrong syntax used for instructions
+    2. hlt not being used as the last instruction'''
+    
     if(not numberHalts):
-        raise SyntaxError("hlt not being used as the last instruction.")
+        raise Exception("hlt not being used as the last instruction at line: %d", linenumber)
     if(ins.strip() == 'hlt'):
         return "10011"+11*'0'
+    else:
+        raise Exception("Wrong syntax used for instruction at line: %d", linenumber)
 
         
 def type_b_instruction(instruction):
