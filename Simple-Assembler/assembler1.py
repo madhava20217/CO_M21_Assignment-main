@@ -1,3 +1,14 @@
+from sys import stdin
+
+#global variables:
+global variablearr          #list of variables
+global otherarr             #list of instructions, elements are 1D arrays
+global labelarr             #list of labels, elements are 1D arrays
+global operandsdict         #dictionary of operands
+
+operandslist = ['add', 'sub', 'mov', 'ld', 'st', 'mul', 'div', 'rs', 'ls', 'xor', 'or', 'and',
+                'not', 'cmp', 'jmp', 'jlt', 'jgt', 'je', 'hlt']
+
 global instructionDictA
 instructionDictA = {'add': '00000', 'sub': '00001', 'mul': '00110', 'xor': '01010', 'or': '01011', 'and':'01100'}
 
@@ -85,7 +96,7 @@ def isValidReg(reg):
     return (reg in regDictA.keys())
 
 #is valid variable instruction, returns boolean if the instructions is a valid var function 
-def validVarInstruction(ins):
+def validVarInstruction(ins,location):
     ins = ins.split()
     if(len(ins) != 2): return False
     if(ins[0] != 'var'): return False
@@ -99,11 +110,11 @@ def validVarInstruction(ins):
     ''' add more dict check here once they are declared above '''
     #check if it is alphanum or has underscores:
     for ch in ins[1]:
-        if(ch.isalnum() or (ch == '_')) continue
-        else return false
+        if(ch.isalnum() or (ch == '_')): continue
+        else: return false
     global var
     ''' add mechanism to give value to var as well (depending on program size) '''
-    var[ins[1]] = 1
+    var[ins[1]] = toBinary(location,8)
     return true
 
 def isValidVar(ins):
@@ -273,3 +284,45 @@ def valid_type_c(instruction):
         return True
     else:
         return False
+
+
+def main():
+    '''The main function for the CO assignment "Winter" 2021'''
+
+    
+    haltflag = False
+    variableflag = False
+
+    memaddresscount = 0     #counts the memory address/instruction number
+
+    input_arr = [];
+
+    for line in stdin:
+        
+        if line == '':
+            break
+        else:
+            line = line.strip()
+            #checking for empty line
+            if(line == ""):
+                continue
+            else:
+                input_arr.append(line);
+            
+
+    #working with variables:
+    i = 0
+    while(i < len(input_arr)):
+        x = input_arr[i].split
+        if(x[0] != "var"): break
+        i+=1;
+    
+    var_arr = input_arr[0:i] 
+    input_arr = input_arr[i:]
+
+    var_loc = len(input_arr)
+    for i in range(0 : len(var_arr)):
+        check = validVarInstruction(var_arr[i],var_loc+i)
+        if(check == False):
+            raise Exception("Unsupported variable name format at line %d", i)
+    #variables processed
