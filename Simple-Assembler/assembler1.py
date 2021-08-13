@@ -7,12 +7,17 @@ instructionDictD = {'ld': '00100', 'st':'00101'}
 global instructionDictE
 instructionDictE = {'jmp':'01111','jlt':'10000','jgt':'10001','je':'10010'}
 
+global instructionDictB
+instructionDictB = {'mov':'00010','rs':'01000','ls':'01001'}
+
+global instructionDictC
+instructionDictC = {'mov':'00011','not':'01101','cmp':'01110'}
+
 global regDict
 regDict = {'R0':'000', 'R1': '001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110', 'FLAGS':'111'}
 
 global var 
 var = dict()
-
 global label_dict
 label_dict = {}
 
@@ -71,8 +76,6 @@ def typeAInstruction(x):
         
         
     else: raise SyntaxError("General Syntax Error")
-
-
 
 def isValidType(operationArr):
     '''takes in array argument and determines if it is a valid type A 
@@ -190,49 +193,39 @@ def typeFInstruction(ins, numberHalts = True):
         raise SyntaxError("hlt not being used as the last instruction.")
     if(ins.strip() == 'hlt'):
         return "10011"+11*'0'
-def type_b_instruction(instruction):
+def typeBInstruction(instruction):
     instruction = instruction.strip()
-    word_list = instruction.split(" ")
+    word_list = instruction.split()
     if(len(word_list)!=3):
         raise SyntaxError("General Syntax Error")
     binary_equivalent ="";
     # First word
-    if word_list[0] == "mov" :
-        binary_equivalent += "00010"
-    elif word_list[0] == "rs":
-        binary_equivalent += "01000"
-    elif word_list[0] == "ls":
-        binary_equivalent += "01001"
-    else:
-        raise SyntaxError("??")
+    binary_equivalent += instructionDictB[word_list[0]] 
     # second word
     if word_list[1] in regDict:
         binary_equivalent += regDict[word_list[1]]
     else:
         raise SyntaxError("Typos in instruction name or register name")
     #third word
-    if(world_list[2][0] != "")
-    if valid_immediate(word_list[2]) == True:
+    if(word_list[2][0] != "$"):
+        raise SyntaxError("General Syntax Error")
+    elif isValidImmediate(word_list[2]) == True:
         temp = bin(int(word_list[2]))[2:]
         binary_equivalent += "{:08d}".format(int(temp))
-        print(binary_equivalent);
     else:
         raise SyntaxError("Illegal Immediate values (less than 0 or more than 255)")
-def type_c_instruction(instruction):
+    return binary_equivalent
+def typeCInstruction(instruction):
     instruction = instruction.strip()
-    word_list = instruction.split(" ")
+    word_list = instruction.split()
     if len(word_list)!=3:
         raise SyntaxError("General Syntax Error")
     binary_equivalent = "";
     # First word
-    if word_list[0] == "mov" :
-        binary_equivalent += "00011"
-    elif word_list[0] == "not":
-        binary_equivalent += "01101"
-    elif word_list[0] == "cmp":
-        binary_equivalent += "01110"
+    if word_list[1] in regDict:
+        binary_equivalent += regDict[word_list[1]]
     else:
-        raise SyntaxError("??")
+        raise SyntaxError("Typos in instruction name or register name")
     binary_equivalent += "00000"
     if word_list[1] in regDict:
         binary_equivalent += regDict[word_list[1]]
@@ -243,7 +236,7 @@ def type_c_instruction(instruction):
     else:
         raise SyntaxError("Typos in instruction name or register name")
     return binary_equivalent
-def valid_immediate(immediate):
+def isValidImmediate(immediate):
     if immediate.isdigit() == True:
         if(int(immediate) <=255 and int(immediate)>=0):
             return True
@@ -251,30 +244,55 @@ def valid_immediate(immediate):
             return False
     else:
         return False
-def valid_label(label):
+def isValidLabel(label):
     if label in label_dict:
         return True
     else:
         return False
-def valid_type_b(instruction):
+def isValidTypeB(instruction):
     instruction = instruction.strip()
-    word_list = instruction.split(" ")
+    word_list = instruction.split()
     if len(word_list)!=3:
         return False
     if word_list[0] in ["rs","ls"]:
         return True
-    elif (word_list[0] == "mov" and word_list[2][1:].isdigit() == True):
+    if (word_list[0] == "mov" and word_list[2][1:].isdigit() == True):
         return True
     else:
         return False
-def valid_type_c(instruction):
+def isValidTypeC(instruction):
     instruction = instruction.strip()
-    word_list = instruction.split(" ")
+    word_list = instruction.split()
     if len(word_list)!=3:
         return False
     if word_list[0] in ["not","cmp"]:
         return True
-    elif (word_list[0] == "mov" and word_list[2][1:].isdigit() != True):
+    elif (word_list[0] == "mov" and word_list[2].isdigit() != True):
         return True
     else:
         return False
+def func():
+    for i in range(0,len(input_arr)):
+        instruction = input_arr.split();
+        if(instruction[0][-1] == ":"):
+            flag = 1;
+            instruction[0] = instruction[0][:len(instruction[0]) - 1]
+            if instruction[0] not in label_dict:
+                for letter in instruction[0]:
+                    if (not letter.isalnum() and letter != '_'):
+                        flag = 0
+                        break
+            else:
+                raise SyntaxError("General Syntax Error")
+            if flag == 1:
+                label_dict[instruction[0]] = i
+                input_arr[i] = input_arr[i][len(instruction[0] + 1)]
+                input_arr[i] = input_arr[i].strip()
+
+
+
+
+        
+
+
+
