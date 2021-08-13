@@ -383,3 +383,56 @@ def main():
             else:
                 raise SyntaxError("General Syntax Error")
     #Labels processed
+
+    
+    #generating list consisting of output commands and to take care of the exceptions that may occur
+    #feeding functions input and collecting outputs:
+
+    #inputs: input_arr, var
+
+    memaddresscount = 0         #memory address initialised
+    output_list = []            #list for storing the output binary, each element is a 16-bit binary number
+    haltFlag = False
+
+    #handling last element not halt exception
+    if(input_arr[-1].strip() != 'hlt'):
+        raise Exception("hlt not being used as the last instruction at line: %d", memaddresscount)
+
+    while(memaddresscount<len(input_arr)):
+        if(input_arr[memaddresscount].strip() == 'hlt'):
+            if(haltFlag): raise Exception("hlt not being used as the last instruction at line: %d", memaddresscount)
+            else: haltFlag = True
+
+        #for other instructions
+        #6 categories: instr is a temporary variable for easier processing
+        instr = input_arr[memaddresscount]
+        instr.strip().split()
+        
+        if(instr[0] in instructionDictA.keys()):
+            output_list.append(typeAInstruction(input_arr[memaddresscount]))
+        
+        elif(instr[0] in instructionDictB.keys()):
+            output_list.append(typeBInstruction(input_arr[memaddresscount]))
+
+        elif(instr[0] in instructionDictC.keys()):
+            output_list.append(typeCInstruction(input_arr[memaddresscount]))
+        
+        elif(instr[0] in instructionDictD.keys()):
+            output_list.append(typeDInstruction(input_arr[memaddresscount]))
+        
+        elif(instr[0] in instructionDictE.keys()):
+            output_list.append(typeEInstruction(input_arr[memaddresscount]))
+
+        elif(instr[0] == 'hlt'):
+            output_list.append(typeFInstruction(input_arr[memaddresscount]), haltflag)
+        
+        else:
+            raise Exception("Typos in instruction name or register name at memory location: %d", memaddresscount)
+
+
+
+        memaddresscount+=1      #incrementing memaddresscount for the next iteration
+
+    #printing out to STDOUT
+    for i in output_list:
+        print(i)
