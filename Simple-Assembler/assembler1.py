@@ -1,3 +1,14 @@
+from sys import stdin
+
+#global variables:
+global variablearr          #list of variables
+global otherarr             #list of instructions, elements are 1D arrays
+global labelarr             #list of labels, elements are 1D arrays
+global operandsdict         #dictionary of operands
+
+operandslist = ['add', 'sub', 'mov', 'ld', 'st', 'mul', 'div', 'rs', 'ls', 'xor', 'or', 'and',
+                'not', 'cmp', 'jmp', 'jlt', 'jgt', 'je', 'hlt']
+
 global instructionDictA
 instructionDictA = {'add': '00000', 'sub': '00001', 'mul': '00110', 'xor': '01010', 'or': '01011', 'and':'01100'}
 
@@ -16,7 +27,7 @@ instructionDictC = {'mov':'00011','not':'01101','cmp':'01110'}
 global regDict
 regDict = {'R0':'000', 'R1': '001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110', 'FLAGS':'111'}
 
-global var 
+global var
 var = dict()
 global label_dict
 label_dict = {}
@@ -26,7 +37,7 @@ label_dict = {}
 def toBinary(s,size):
     ans = ""
     if(s.isnumeric()):
-        s = int(s) 
+        s = int(s)
     else:
         return "Invalid syntax"
     while(s > 0):
@@ -46,15 +57,12 @@ def toBinary(s,size):
         ans = ans[len(ans) - size:]
         return ans
     
-
-
-
 def typeAInstruction(x):
-    '''Takes in input for type A instruction, tests if it is valid 
+    '''Takes in input for type A instruction, tests if it is valid
     and returns the corresponding binary code for the instruction
     Requires: string input
     Functions used:
-        1. isValidTypeA: checks if string is a valid expression 
+        1. isValidTypeA: checks if string is a valid expression
         of type A
         2. isValidImm: checks if immediate is a valid immediate
         3. isValidReg: checks if register is valid.
@@ -62,7 +70,7 @@ def typeAInstruction(x):
     x = x.split()
     if(isValidTypeA(x)):
         binary = ''
-        
+
         #accounting for the op-code
         if(x[0] in instructionDictA.keys()): binary+=instructionDictA(x[0]);
 
@@ -73,44 +81,45 @@ def typeAInstruction(x):
         else: raise SyntaxError("Typos in instruction or register name")
 
 
-        
-        
+
+<<<<<<< HEAD
+=======
+
     else: raise SyntaxError("General Syntax Error")
 
+>>>>>>> 613ff299790aa8c2e1c0d79f311a72a99bf62a0e
 def isValidType(operationArr):
-    '''takes in array argument and determines if it is a valid type A 
+    '''takes in array argument and determines if it is a valid type A
     syntax'''
 
     if(len(operationArr) != 4): return False
     if(operationArr[0] not in instructionDictA): return False
     for i in range(1, 4):
-        if(!isValidReg(operationArr[1])): return False
+        if(not isValidReg(operationArr[1])): return False
     return True
 
-
 def isValidReg(reg):
-    '''except flag'''
+    '''checks for all valid registers except flag'''
     regDictA = {'R0':'000', 'R1': '001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110'}
     return (reg in regDictA.keys())
 
-
-
 #is valid variable instruction, returns boolean if the instructions is a valid var function 
-def validVarInstruction(ins):
+def validVarInstruction(ins,location):
     ins = ins.split()
-    if(len(ins) != 2) return false
-    if(ins[0] != 'var') return false 
-    if(ins[1] in regDict.keys()) return false
-    if(ins[1] in instructionDictA.keys()) return false 
+    if(len(ins) != 2): return False
+    if(ins[0] != 'var'): return False
+    if(ins[1] in regDict.keys()): return False
+    if(ins[1] in var.keys()): return False #multiple declaration of single variable
+    if(ins[1] in operandslist): return False
     ''' add more dict check here once they are declared above '''
     #check if it is alphanum or has underscores:
     for ch in ins[1]:
-        if(ch.isalnum() or (ch == '_')) continue
-        else return false
+        if(ch.isalnum() or (ch == '_')): continue
+        else: return False
     global var
     ''' add mechanism to give value to var as well (depending on program size) '''
-    var[ins[1]] = 1
-    return true
+    var[ins[1]] = toBinary(location,8)
+    return True
 
 def isValidVar(ins):
     global var
@@ -124,12 +133,12 @@ def isValidTypeD(ins):
     return (x[0] in instructionDictD.keys())
 
 def typeDInstruction(line):
-    '''assumes ins is of type D, 
+    '''assumes ins is of type D,
     Takes in string argument and returns its corresponding binary string
     returns error if the registers or memory address are invalid
 
     types of error:
-    use of undefined variable address 
+    use of undefined variable address
     misuse of labels as variables
     Illegal use of flag register '''
     ins = line.split()
@@ -141,7 +150,7 @@ def typeDInstruction(line):
         return "Typo in register name"
     else:
         binary = binary + regDict[ins[1]]
-    
+
     if(ins[2] in label_dict.keys()):
         return "Misuse of labels as variables"
     elif(isValidVar(ins[2]) == False):
@@ -152,8 +161,8 @@ def typeDInstruction(line):
     return binary
 
 def isValidTypeE(ins):
-    #takes in string and ifnds out if type mathces or not 
-    x = ins.split() 
+    #takes in string and ifnds out if type mathces or not
+    x = ins.split()
     if len(x) != 2:
         return False
     return (x[0] in instructionDictE.keys());
@@ -161,7 +170,7 @@ def isValidTypeE(ins):
 def typeEInstruction(line):
     '''assumes ins is of type E,
     Takes in string argument and returns its corresponding binary string
-    
+
     types of error:
     misuse of variables as labels
     use of undefined labels'''
@@ -170,22 +179,18 @@ def typeEInstruction(line):
 
     if(isValidVar(ins[1]) == True):
         #error
-        return "misuse of variables as labels" 
+        return "misuse of variables as labels"
     elif(valid_label(ins[1]) == False):
         return "use of undefined labels"
     else:
-        binary = binary + label_dict[ins[1]] 
-    
+        binary = binary + label_dict[ins[1]]
+
     return binary
-
-
-
-
 
 def typeFInstruction(ins, numberHalts = True):
     '''Takes in string argument and returns its corresponding binary.
     Optional: can also raise an error depending on the boolean value numberHalts
-    
+
     Operands:
         1. String ins for the instruction
         2. boolean numberHalts which checks if the number of halts are not >1, default value is true'''
@@ -193,6 +198,7 @@ def typeFInstruction(ins, numberHalts = True):
         raise SyntaxError("hlt not being used as the last instruction.")
     if(ins.strip() == 'hlt'):
         return "10011"+11*'0'
+
 def typeBInstruction(instruction):
     instruction = instruction.strip()
     word_list = instruction.split()
@@ -271,7 +277,47 @@ def isValidTypeC(instruction):
         return True
     else:
         return False
-def func():
+
+def main():
+    '''The main function for the CO assignment "Winter" 2021'''
+
+    
+    haltflag = False
+    variableflag = False
+
+    memaddresscount = 0     #counts the memory address/instruction number
+
+    input_arr = [];
+
+    for line in stdin:
+        
+        if line == '':
+            break
+        else:
+            line = line.strip()
+            #checking for empty line
+            if(line == ""):
+                continue
+            else:
+                input_arr.append(line);
+            
+
+    #working with variables:
+    i = 0
+    while(i < len(input_arr)):
+        x = input_arr[i].split()
+        if(x[0] != "var"): break
+        i+=1;
+    
+    var_arr = input_arr[0:i] 
+    input_arr = input_arr[i:]
+
+    var_loc = len(input_arr)
+    for i in range(0 : len(var_arr)):
+        check = validVarInstruction(var_arr[i],var_loc+i)
+        if(check == False):
+            raise Exception("Unsupported variable name format at line %d", i)
+    #variables processed
     for i in range(0,len(input_arr)):
         instruction = input_arr.split();
         if(instruction[0][-1] == ":"):
@@ -288,11 +334,4 @@ def func():
                 label_dict[instruction[0]] = i
                 input_arr[i] = input_arr[i][len(instruction[0] + 1)]
                 input_arr[i] = input_arr[i].strip()
-
-
-
-
-        
-
-
 
