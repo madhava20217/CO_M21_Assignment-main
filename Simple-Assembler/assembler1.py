@@ -128,6 +128,7 @@ def isValidTypeA(operationArr):
 
 
 #is valid variable instruction, returns boolean if the instructions is a valid var function 
+#along with updating var dictionary
 def validVarInstruction(ins,location):
     ins = ins.split()
     if(len(ins) != 2): return False
@@ -142,7 +143,7 @@ def validVarInstruction(ins,location):
         else: return False
     global var
     ''' add mechanism to give value to var as well (depending on program size) '''
-    var[ins[1]] = toBinary(location,8)
+    var[ins[1]] = "{.08d}".format(location)
     return True
 def isValidVar(ins):
     global var
@@ -168,16 +169,22 @@ def typeDInstruction(line):
     binary = instructionDictD[ins[0]]
     if (ins[1] == "FLAG"):
         #error invalid register
-        return "Illegal use of flag register"
-    elif(isValidReg(ins[1]) == False):
-        return "Typo in register name"
+        raise Exception("Illegal use of flag register at line: %d", linenumber)
+    elif(isValidVar(ins[1]) == True):
+        raise Exception("Wrong syntax used for the instruction at line: %d", linenumber)
+    elif(ins[1] in label_dict.keys()):
+        raise Exception("Wrong syntax used for the instruction at line: %d", linenumber)
+    elif(isValidImmediate(ins[1]) == True):
+        raise Exception("Wrong syntax used for the instruction at line: %d", linenumber)
+    elif (ins[1] not in regDict.keys()):
+        raise Exception("Typo in register name at line: %d", linenumber)
     else:
         binary = binary + regDict[ins[1]]
 
     if(ins[2] in label_dict.keys()):
-        return "Misuse of labels as variables"
+        raise Exception("Misuse of labels as variables at line: %d", linenumber)
     elif(isValidVar(ins[2]) == False):
-        return "Use of undefined Variable address"
+        raise Exception("Use of undefined Variable address at line: %d", linenumber)
     else:
         binary = binary + var[ins[2]]
 
@@ -202,9 +209,9 @@ def typeEInstruction(line):
 
     if(isValidVar(ins[1]) == True):
         #error
-        return "misuse of variables as labels"
-    elif(valid_label(ins[1]) == False):
-        return "use of undefined labels"
+        raise Exception("misuse of variables as labels at line: %d", linenumber)
+    elif(validLabel(ins[1]) == False):
+        raise Exception("use of undefined labels at line: %d", linenumber)
     else:
         binary = binary + label_dict[ins[1]]
 
