@@ -130,6 +130,7 @@ def isValidTypeA(operationArr):
 #is valid variable instruction, returns boolean if the instructions is a valid var function 
 #along with updating var_dict dictionary
 def validVarInstruction(ins,location):
+    global var_dict
     ins = ins.split()
     if(len(ins) != 2): return False
     if(ins[0] != 'var'): return False
@@ -141,8 +142,6 @@ def validVarInstruction(ins,location):
     for ch in ins[1]:
         if(ch.isalnum() or (ch == '_')): continue
         else: return False
-    global var_dict
-    ''' add mechanism to give value to var as well (depending on program size) '''
     var_dict[ins[1]] = "{.08d}".format(location)
     return True
 def isValidVar(ins):
