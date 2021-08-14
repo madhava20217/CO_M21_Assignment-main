@@ -339,7 +339,7 @@ def isValidTypeB(instruction):
         return False
     if word_list[0] in ["rs","ls"]:
         return True
-    if (word_list[0] == "mov" and word_list[2][1:].isdigit() == True):
+    if (word_list[0] == "mov" and word_list[2][1:].isdigit() == True and word_list[2][0] == "$"):
         return True
     else:
         return False
