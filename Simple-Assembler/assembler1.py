@@ -281,7 +281,8 @@ def typeCInstruction(instruction):
         raise Exception("General Syntax Error at line: {}".format(linenumber))
     binary_equivalent = "";
     # First word
-    binary_equivalent += instructionDictC[word_list[0]] 
+    binary_equivalent += instructionDictC[word_list[0]]
+    binary_equivalent += "00000" 
     #second word
     if word_list[1] in regDict and word_list[1] != "FLAGS":
         binary_equivalent += regDict[word_list[1]]
@@ -295,7 +296,6 @@ def typeCInstruction(instruction):
         raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     else:
         raise Exception("Typo in register name at line: {}".format(linenumber))
-    binary_equivalent += "00000"
     #3rd word
     if(word_list[0] == "mov"):
         if word_list[2] in regDict:
