@@ -22,7 +22,7 @@ global instructionDictB
 instructionDictB = {'mov':'00010','rs':'01000','ls':'01001'}
 
 global instructionDictC
-instructionDictC = {'mov':'00011','not':'01101','cmp':'01110'}
+instructionDictC = {'mov':'00011','not':'01101','cmp':'01110','div':'00111'}
 
 global regDict
 regDict = {'R0':'000', 'R1': '001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110', 'FLAGS':'111'}
@@ -227,7 +227,7 @@ def typeBInstruction(instruction):
         temp = bin(int(word_list[2]))[2:]
         binary_equivalent += "{:08d}".format(int(temp))
     else:
-        raise Exception("Illegal Immediate values (less than 0 or more than 255) {}".format(linenumber))
+        raise Exception("Illegal Immediate values (less than 0 or more than 255) at line {}".format(linenumber))
     return binary_equivalent
 def typeCInstruction(instruction):
     instruction = instruction.strip()
@@ -305,7 +305,7 @@ def isValidTypeC(instruction):
     word_list = instruction.split()
     if len(word_list)!=3:
         return False
-    if word_list[0] in ["not","cmp"]:
+    if word_list[0] in ["not","cmp","div"]:
         return True
     elif (word_list[0] == "mov" and word_list[2].isdigit() != True):
         return True
@@ -430,7 +430,7 @@ def main():
         elif(instr[0] in operandslist):
             raise Exception("Wrong syntax used for instruction at line {}".format(linenumber))
         else:
-            raise Exception("Typos in instruction name or register name at memory location: %d", linenumber)
+            raise Exception("Typos in instruction name or register name at line: {}".format(linenumber))
 
         memaddresscount+=1      #incrementing memaddresscount for the next iteration
 
