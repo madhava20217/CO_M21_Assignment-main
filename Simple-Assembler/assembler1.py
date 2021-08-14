@@ -441,12 +441,12 @@ def main():
 
     #handling last element not halt exception
     if(input_arr[-1].strip() != 'hlt'):
-        raise Exception("hlt not being used as the last instruction at line: %d", memaddresscount)
+        raise Exception("hlt not being used as the last instruction at line: {}".format(memaddresscount))
 
     while(memaddresscount<(len(input_arr)-1)):
         linenumber = line_no[memaddresscount]
         if(input_arr[memaddresscount].strip() == 'hlt'):
-            raise Exception("hlt not being used as the last instruction at line: %d", linenumber)
+            raise Exception("hlt not being used as the last instruction at line:{}".format(linenumber))
 
         #for other instructions
         #6 categories: instr is a temporary variable for easier processing
