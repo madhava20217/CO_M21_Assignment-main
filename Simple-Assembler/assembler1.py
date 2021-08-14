@@ -168,22 +168,22 @@ def typeDInstruction(line):
     binary = instructionDictD[ins[0]]
     if (ins[1] == "FLAGS"):
         #error invalid register
-        raise Exception("Illegal use of flag register at line: %d", linenumber)
+        raise Exception("Illegal use of flag register at line: {}".format(linenumber))
     elif(isValidVar(ins[1]) == True):
-        raise Exception("Wrong syntax used for the instruction at line: %d", linenumber)
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     elif(ins[1] in label_dict.keys()):
-        raise Exception("Wrong syntax used for the instruction at line: %d", linenumber)
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     elif(isValidImmediate(ins[1]) == True):
-        raise Exception("Wrong syntax used for the instruction at line: %d", linenumber)
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     elif (ins[1] not in regDict.keys()):
-        raise Exception("Typo in register name at line: %d", linenumber)
+        raise Exception("Typo in register name at line: {}".format(linenumber))
     else:
         binary = binary + regDict[ins[1]]
 
     if(ins[2] in label_dict.keys()):
-        raise Exception("Misuse of labels as variables at line: %d", linenumber)
+        raise Exception("Misuse of labels as variables at line: {}".format(linenumber))
     elif(isValidVar(ins[2]) == False):
-        raise Exception("Use of undefined Variable address at line: %d", linenumber)
+        raise Exception("Use of undefined Variable address at line: {}".format(linenumber))
     else:
         binary = binary + var_dict[ins[2]]
 
@@ -208,9 +208,9 @@ def typeEInstruction(line):
 
     if(isValidVar(ins[1]) == True):
         #error
-        raise Exception("misuse of variables as labels at line: %d", linenumber)
+        raise Exception("misuse of variables as labels at line: {}".format(linenumber))
     elif((ins[1] not in label_dict.keys())):
-        raise Exception("use of undefined labels at line: %d", linenumber)
+        raise Exception("use of undefined labels at line: {}".format(linenumber))
     else:
         binary = binary + label_dict[ins[1]]
 
@@ -413,7 +413,7 @@ def main():
     for i in range(0 , len(var_arr)):
         check = validVarInstruction(var_arr[i],var_loc+i)
         if(check == False):
-            raise Exception("Unsupported variable name format at line %d", var_line_no[i])
+            raise Exception("Unsupported variable name format at line {}".format(var_line_no[i]))
     #variables processed
     #Checking for labels and removing them from the instruction line if found
     for i in range(0,len(input_arr)):
