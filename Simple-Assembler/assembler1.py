@@ -473,7 +473,7 @@ def main():
             output_list.append(typeEInstruction(input_arr[memaddresscount]))
 
         elif(instr[0] == 'hlt'):
-            output_list.append(typeFInstruction(input_arr[memaddresscount]), haltflag)
+            output_list.append(typeFInstruction(input_arr[memaddresscount], haltflag))
         
         else:
             raise Exception("Typos in instruction name or register name at memory location: %d", linenumber)
