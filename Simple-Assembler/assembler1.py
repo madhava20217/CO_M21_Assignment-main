@@ -143,7 +143,7 @@ def validVarInstruction(ins,location):
         if(ch.isalnum() or (ch == '_')): continue
         else: return False
     location = bin(location)[2:]
-    var_dict[ins[1]] = "{.08d}".format(location)
+    var_dict[ins[1]] = "{.08d}".format(int(location))
     return True
 def isValidVar(ins):
     global var_dict
