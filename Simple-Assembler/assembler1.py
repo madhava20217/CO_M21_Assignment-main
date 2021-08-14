@@ -75,18 +75,18 @@ def typeAInstruction(x):
         binary = ''
 
         #accounting for the op-code
-        if(x[0] in instructionDictA.keys()): binary+=instructionDictA(x[0])
+        if(x[0] in instructionDictA.keys()): binary+=instructionDictA.get(x[0])+"00"
 
         #checking operand types:
         op1 = x[1]      #defining first operand
         op2 = x[2]      #defining second operand
         op3 = x[3]      #defining third operand
 
-        binary+= regDict(op1) + regDict(op2) + regDict(op3)
+        binary+= regDict.get(op1) + regDict.get(op2) + regDict.get(op3)
 
 
         if(len(binary) == 16): return binary
-        else: raise SyntaxError("General Syntax Error at line %d", linenumber)
+        else: raise SyntaxError("General Syntax Error at line ", linenumber)
 
     else: return None
 
@@ -103,7 +103,7 @@ def isValidTypeA(operationArr):
     For the third part, mainly taking care of the nature of operands.'''
 
     if(len(operationArr) != 4):                                             #if length is not equal to 4, which is the length of typeA
-        raise SyntaxError("General Syntax Error at line: %d", linenumber)
+        raise SyntaxError("General Syntax Error at line: ", linenumber)
         return False
     
     if(operationArr[0].strip() not in instructionDictA.keys()):                            #if instruction not in typeA list
@@ -113,15 +113,15 @@ def isValidTypeA(operationArr):
         tempReg = operationArr[i].strip()
         if(tempReg not in regDict.keys()):                          #if it is not in the list of registers, three cases ensue
             if(tempReg in var_dict.keys()):                                     #it is a variable
-                raise Exception("Wrong syntax used for instructions at line: %d", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
             if(tempReg in label_dict.keys()):
-                raise Exception("Wrong syntax used for instructions at line: %d", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
             if(tempReg[0] == '$'):
-                raise Exception("Wrong syntax used for instructions at line: %d", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
             else:
-                raise Exception("Wrong syntax used for instructions at line: %d", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
         if(tempReg == "FLAGS"):                                         #if it is the FLAGS register
-                raise Exception("Illegal use of FLAGS register at line: %d", linenumber)
+                raise Exception("Illegal use of FLAGS register at line: ", linenumber)
             
     return True
 
