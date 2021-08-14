@@ -59,7 +59,6 @@ def toBinary(s,size):
     
 
 
-
 def typeAInstruction(x):
     '''Takes in input for type A instruction, tests if it is valid
     and returns the corresponding binary code for the instruction
