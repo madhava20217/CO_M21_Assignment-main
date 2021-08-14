@@ -314,7 +314,8 @@ def isValidTypeC(instruction):
 def validLabel(label_name):
     if label_name in regDict: 
         return False
-    #change name of var_dict
+    elif len(label_name)== 0:
+        return False
     elif label_name in var_dict: 
         return False
     elif label_name in operandslist:
