@@ -86,7 +86,7 @@ def typeAInstruction(x):
 
 
         if(len(binary) == 16): return binary
-        else: raise SyntaxError("General Syntax Error at line ", linenumber)
+        else: raise Exception("General Syntax Error at line ", linenumber)
 
     else: return None
 
@@ -103,7 +103,7 @@ def isValidTypeA(operationArr):
     For the third part, mainly taking care of the nature of operands.'''
 
     if(len(operationArr) != 4):                                             #if length is not equal to 4, which is the length of typeA
-        raise SyntaxError("General Syntax Error at line: ", linenumber)
+        raise Exception("General Syntax Error at line: ", linenumber)
         return False
     
     if(operationArr[0].strip() not in instructionDictA.keys()):                            #if instruction not in typeA list
@@ -243,7 +243,7 @@ def typeBInstruction(instruction):
     binary_equivalent ="";
     # First word
     binary_equivalent += instructionDictB[word_list[0]] 
-    # second word
+    # second wor
     if word_list[1] in regDict and word_list[1] != "FLAGS":
         binary_equivalent += regDict[word_list[1]]
     elif word_list[1] == "FLAGS":
@@ -477,8 +477,6 @@ def main():
         
         else:
             raise Exception("Typos in instruction name or register name at memory location: %d", linenumber)
-
-
 
         memaddresscount+=1      #incrementing memaddresscount for the next iteration
 
