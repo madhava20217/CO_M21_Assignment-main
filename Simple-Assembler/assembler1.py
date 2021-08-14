@@ -437,7 +437,7 @@ def main():
     #handling last element not halt exception
     last_ins = input_arr[-1].split()
     
-    if(last_ins[1] == 'hlt' and len(last_ins) != 1):
+    if(last_ins[0] == 'hlt' and len(last_ins) != 1):
         raise Exception("Wrong syntax used for instruction at line : {}".format(line_no[-1]))
     if(input_arr[-1].strip() != 'hlt'):
         raise Exception("Missing halt instruction at line: {}".format(line_no[-1]+1))
