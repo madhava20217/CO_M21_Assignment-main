@@ -216,7 +216,7 @@ def typeEInstruction(line):
 
     return binary
 
-def typeFInstruction(ins, numberHalts = True):
+def typeFInstruction(ins):
     '''Takes in string argument and returns its corresponding binary.
     Optional: can also raise an error depending on the boolean value numberHalts
 
@@ -228,8 +228,6 @@ def typeFInstruction(ins, numberHalts = True):
     1. Wrong syntax used for instructions
     2. hlt not being used as the last instruction'''
     
-    if(not numberHalts):
-        raise Exception("hlt not being used as the last instruction at line: %d", linenumber)
     if(ins.strip() == 'hlt'):
         return "10011"+11*'0'
     else:
@@ -472,8 +470,8 @@ def main():
         elif(instr[0] in instructionDictE.keys() and isValidTypeE(input_arr[memaddresscount])):
             output_list.append(typeEInstruction(input_arr[memaddresscount]))
 
-        elif(instr[0] == 'hlt'):
-            output_list.append(typeFInstruction(input_arr[memaddresscount], haltflag))
+        elif(instr[0] == 'hlt' && not haltflag):
+            output_list.append(typeFInstruction(input_arr[memaddresscount]))
         
         else:
             raise Exception("Typos in instruction name or register name at memory location: %d", linenumber)
