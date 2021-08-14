@@ -466,6 +466,9 @@ def main():
         
         elif(instr[0] in instructionDictE.keys() and isValidTypeE(input_arr[memaddresscount])):
             output_list.append(typeEInstruction(input_arr[memaddresscount]))
+        
+        elif(instr[0] in operandslist):
+            raise Exception("Wrong syntax used for instruction at line {}".format(linenumber))
 
         else:
             raise Exception("Typos in instruction name or register name at memory location: %d", linenumber)
