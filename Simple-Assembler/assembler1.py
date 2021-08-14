@@ -209,7 +209,7 @@ def typeEInstruction(line):
     if(isValidVar(ins[1]) == True):
         #error
         raise Exception("misuse of variables as labels at line: %d", linenumber)
-    elif((ins[1] in label_dict.keys())):
+    elif((ins[1] not in label_dict.keys())):
         raise Exception("use of undefined labels at line: %d", linenumber)
     else:
         binary = binary + label_dict[ins[1]]
