@@ -130,6 +130,7 @@ def isValidTypeA(operationArr):
 #is valid variable instruction, returns boolean if the instructions is a valid var function 
 #along with updating var_dict dictionary
 def validVarInstruction(ins,location):
+    global var_dict
     ins = ins.split()
     if(len(ins) != 2): return False
     if(ins[0] != 'var'): return False
@@ -141,9 +142,8 @@ def validVarInstruction(ins,location):
     for ch in ins[1]:
         if(ch.isalnum() or (ch == '_')): continue
         else: return False
-    global var_dict
-    ''' add mechanism to give value to var as well (depending on program size) '''
-    var_dict[ins[1]] = "{.08d}".format(location)
+    location = bin(location)[2:]
+    var_dict[ins[1]] = "{.08d}".format(int(location))
     return True
 def isValidVar(ins):
     global var_dict
@@ -378,7 +378,7 @@ def main():
     
     haltflag = False
     variableflag = False
-
+    global linenumber
     memaddresscount = 0     #counts the memory address/instruction number
 
     line_no = []
@@ -420,6 +420,7 @@ def main():
     #variables processed
     #Checking for labels and removing them from the instruction line if found
     for i in range(0,len(input_arr)):
+        linenumber = line_no[i]
         instruction = input_arr[i].split();
         if(instruction[0][-1] == ":"):
             instruction[0] = instruction[0][:len(instruction[0]) - 1]
@@ -447,35 +448,36 @@ def main():
         raise Exception("hlt not being used as the last instruction at line: %d", memaddresscount)
 
     while(memaddresscount<len(input_arr)):
+        linenumber = line_no[memaddresscount]
         if(input_arr[memaddresscount].strip() == 'hlt'):
-            if(haltFlag): raise Exception("hlt not being used as the last instruction at line: %d", memaddresscount)
+            if(haltFlag): raise Exception("hlt not being used as the last instruction at line: %d", linenumber)
             else: haltFlag = True
 
         #for other instructions
         #6 categories: instr is a temporary variable for easier processing
         instr = input_arr[memaddresscount]
-        instr.strip().split()
+        instr = instr.strip().split()
         
-        if(instr[0] in instructionDictA.keys()):
+        if(instr[0] in instructionDictA.keys() and isValidTypeA(instr)):
             output_list.append(typeAInstruction(input_arr[memaddresscount]))
         
-        elif(instr[0] in instructionDictB.keys()):
+        elif(instr[0] in instructionDictB.keys() and isValidTypeB(input_arr[memaddresscount])):
             output_list.append(typeBInstruction(input_arr[memaddresscount]))
 
-        elif(instr[0] in instructionDictC.keys()):
+        elif(instr[0] in instructionDictC.keys() and isValidTypeC(input_arr[memaddresscount])):
             output_list.append(typeCInstruction(input_arr[memaddresscount]))
         
-        elif(instr[0] in instructionDictD.keys()):
+        elif(instr[0] in instructionDictD.keys() and isValidTypeD(input_arr[memaddresscount])):
             output_list.append(typeDInstruction(input_arr[memaddresscount]))
         
-        elif(instr[0] in instructionDictE.keys()):
+        elif(instr[0] in instructionDictE.keys() and isValidTypeE(input_arr[memaddresscount])):
             output_list.append(typeEInstruction(input_arr[memaddresscount]))
 
         elif(instr[0] == 'hlt'):
             output_list.append(typeFInstruction(input_arr[memaddresscount]), haltflag)
         
         else:
-            raise Exception("Typos in instruction name or register name at memory location: %d", memaddresscount)
+            raise Exception("Typos in instruction name or register name at memory location: %d", linenumber)
 
 
 
