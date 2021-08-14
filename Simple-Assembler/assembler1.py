@@ -205,7 +205,6 @@ def typeEInstruction(line):
     use of undefined labels'''
     ins = line.split()
     binary = instructionDictE[ins[0]] + "000"
-
     if(isValidVar(ins[1]) == True):
         #error
         raise Exception("misuse of variables as labels at line: %d", linenumber)
