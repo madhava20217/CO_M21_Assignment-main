@@ -33,32 +33,6 @@ global label_dict
 label_dict = {}
 
 
-# takes in s(string) and size(int) returns binary string of size size
-def toBinary(s,size):
-    ans = ""
-    if(s.isnumeric()):
-        s = int(s)
-    else:
-        return "Invalid syntax"
-    while(s > 0):
-        if(s % 2 == 0):
-            ans = "0" + ans;
-        else:
-            ans = "1" + ans;
-        s = s//2
-
-    if(len(ans)==size):
-        return ans;
-    elif(len(ans) < size):
-        while(len(ans) != size):
-            ans = "0" + ans
-        return ans
-    else:
-        ans = ans[len(ans) - size:]
-        return ans
-    
-
-
 def typeAInstruction(x):
     '''Takes in input for type A instruction, tests if it is valid
     and returns the corresponding binary code for the instruction
@@ -216,22 +190,6 @@ def typeEInstruction(line):
 
     return binary
 
-def typeFInstruction(ins):
-    '''Takes in string argument and returns its corresponding binary.
-    Optional: can also raise an error depending on the boolean value numberHalts
-
-    Operands:
-        1. String ins for the instruction
-        2. boolean numberHalts which checks if the number of halts are not >1, default value is true
-        
-    Possible Errors:
-    1. Wrong syntax used for instructions
-    2. hlt not being used as the last instruction'''
-    
-    if(ins.strip() == 'hlt'):
-        return "10011"+11*'0'
-    else:
-        raise Exception("Wrong syntax used for instruction at line: %d", linenumber)
 
 def typeBInstruction(instruction):
     instruction = instruction.strip()
