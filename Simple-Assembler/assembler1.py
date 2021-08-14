@@ -347,6 +347,7 @@ def main():
             line = line.strip()
             #checking for empty line
             if(line == ""):
+                ctr = ctr+1
                 continue
             else:
                 input_arr.append(line)
