@@ -438,17 +438,15 @@ def main():
 
     memaddresscount = 0         #memory address initialised
     output_list = []            #list for storing the output binary, each element is a 16-bit binary number
-    haltFlag = False
 
     #handling last element not halt exception
     if(input_arr[-1].strip() != 'hlt'):
         raise Exception("hlt not being used as the last instruction at line: %d", memaddresscount)
 
-    while(memaddresscount<len(input_arr)):
+    while(memaddresscount<(len(input_arr)-1)):
         linenumber = line_no[memaddresscount]
         if(input_arr[memaddresscount].strip() == 'hlt'):
-            if(haltFlag): raise Exception("hlt not being used as the last instruction at line: %d", linenumber)
-            else: haltFlag = True
+            raise Exception("hlt not being used as the last instruction at line: %d", linenumber)
 
         #for other instructions
         #6 categories: instr is a temporary variable for easier processing
@@ -469,13 +467,11 @@ def main():
         elif(instr[0] in instructionDictE.keys() and isValidTypeE(input_arr[memaddresscount])):
             output_list.append(typeEInstruction(input_arr[memaddresscount]))
 
-        elif(instr[0] == 'hlt' and not haltFlag):
-            output_list.append(typeFInstruction(input_arr[memaddresscount]))
-        
         else:
             raise Exception("Typos in instruction name or register name at memory location: %d", linenumber)
 
         memaddresscount+=1      #incrementing memaddresscount for the next iteration
+    output_list.append("10011" + 11*"0")
 
     #printing out to STDOUT
     for i in output_list:
