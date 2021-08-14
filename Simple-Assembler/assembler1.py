@@ -373,7 +373,8 @@ def validLabel(label_name):
 def main():
     '''The main function for the CO assignment "Winter" 2021'''
 
-    
+    global linenumber 
+    linenumber = 1
     haltflag = False
     variableflag = False
 
@@ -418,6 +419,7 @@ def main():
     #variables processed
     #Checking for labels and removing them from the instruction line if found
     for i in range(0,len(input_arr)):
+        linenumber = line_no[i]
         instruction = input_arr[i].split();
         if(instruction[0][-1] == ":"):
             instruction[0] = instruction[0][:len(instruction[0]) - 1]
@@ -445,8 +447,9 @@ def main():
         raise Exception("hlt not being used as the last instruction at line: %d", memaddresscount)
 
     while(memaddresscount<len(input_arr)):
+        linenumber = line_no[memaddresscount]
         if(input_arr[memaddresscount].strip() == 'hlt'):
-            if(haltFlag): raise Exception("hlt not being used as the last instruction at line: %d", memaddresscount)
+            if(haltFlag): raise Exception("hlt not being used as the last instruction at line: %d", linenumber)
             else: haltFlag = True
 
         #for other instructions
@@ -473,7 +476,7 @@ def main():
             output_list.append(typeFInstruction(input_arr[memaddresscount]), haltflag)
         
         else:
-            raise Exception("Typos in instruction name or register name at memory location: %d", memaddresscount)
+            raise Exception("Typos in instruction name or register name at memory location: %d", linenumber)
 
 
 
