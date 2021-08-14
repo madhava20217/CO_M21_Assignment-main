@@ -454,7 +454,6 @@ def main():
         #6 categories: instr is a temporary variable for easier processing
         instr = input_arr[memaddresscount]
         instr = instr.strip().split()
-        
         if(instr[0] in instructionDictA.keys() and isValidTypeA(instr)):
             output_list.append(typeAInstruction(input_arr[memaddresscount]))
         
