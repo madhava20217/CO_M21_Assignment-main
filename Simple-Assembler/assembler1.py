@@ -396,18 +396,17 @@ def main():
     memaddresscount = 0         #memory address initialised
     output_list = []            #list for storing the output binary, each element is a 16-bit binary number
 
-    #handling last element not halt exception
-    if(input_arr[-1].strip() != 'hlt'):
-        raise Exception("hlt not being used as the last instruction at line: {}".format(memaddresscount))
-
     while(memaddresscount<(len(input_arr)-1)):
         linenumber = line_no[memaddresscount]
+
         if(input_arr[memaddresscount].strip() == 'hlt'):
             raise Exception("hlt not being used as the last instruction at line:{}".format(linenumber))
 
         #for other instructions
         #6 categories: instr is a temporary variable for easier processing
         instr = input_arr[memaddresscount]
+        if(instr[0] == "hlt"):
+            raise Exception("Wrong syntax used for instruction at line {}".format(linenumber))
         instr = instr.strip().split()
         if(instr[0] in instructionDictA.keys() and isValidTypeA(instr)):
             output_list.append(typeAInstruction(input_arr[memaddresscount]))
@@ -430,7 +429,12 @@ def main():
         else:
             raise Exception("Typos in instruction name or register name at memory location: %d", linenumber)
 
+
+    #handling last element not halt exception
+    if(input_arr[-1].strip() != 'hlt'):
+        raise Exception("Missing halt instruction at line: {}".format(line_no[len(line_no)-1]+1))
         memaddresscount+=1      #incrementing memaddresscount for the next iteration
+
     output_list.append("10011" + 11*"0")
 
     #printing out to STDOUT
