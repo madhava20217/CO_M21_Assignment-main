@@ -113,15 +113,15 @@ def isValidTypeA(operationArr):
         tempReg = operationArr[i].strip()
         if(tempReg not in regDict.keys()):                          #if it is not in the list of registers, three cases ensue
             if(tempReg in var_dict.keys()):                                     #it is a variable
-                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: {}".format(linenumber))
             if(tempReg in label_dict.keys()):
-                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: {}".format(linenumber))
             if(tempReg[0] == '$'):
-                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: {}".format(linenumber))
             else:
-                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: {}".format(linenumber))
         if(tempReg == "FLAGS"):                                         #if it is the FLAGS register
-                raise Exception("Illegal use of FLAGS register at line: ", linenumber)
+                raise Exception("Illegal use of FLAGS register at line: {}".format(linenumber))
             
     return True
 
