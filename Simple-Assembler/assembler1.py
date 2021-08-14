@@ -470,7 +470,7 @@ def main():
         elif(instr[0] in instructionDictE.keys() and isValidTypeE(input_arr[memaddresscount])):
             output_list.append(typeEInstruction(input_arr[memaddresscount]))
 
-        elif(instr[0] == 'hlt' && not haltflag):
+        elif(instr[0] == 'hlt' and not haltflag):
             output_list.append(typeFInstruction(input_arr[memaddresscount]))
         
         else:
