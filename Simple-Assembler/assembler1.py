@@ -429,7 +429,7 @@ def main():
                 input_arr[i] = input_arr[i][len(instruction[0]) + 1:]
                 input_arr[i] = input_arr[i].strip()
             else:
-                raise Exception("General Syntax Error at line".format(linenumber))
+                raise Exception("General Syntax Error at line {}".format(linenumber))
     #Labels processed
 
     
