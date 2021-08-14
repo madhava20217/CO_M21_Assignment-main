@@ -438,7 +438,6 @@ def main():
 
     memaddresscount = 0         #memory address initialised
     output_list = []            #list for storing the output binary, each element is a 16-bit binary number
-    haltFlag = False
 
     #handling last element not halt exception
     if(input_arr[-1].strip() != 'hlt'):
@@ -447,8 +446,7 @@ def main():
     while(memaddresscount<(len(input_arr)-1)):
         linenumber = line_no[memaddresscount]
         if(input_arr[memaddresscount].strip() == 'hlt'):
-            if(haltFlag): raise Exception("hlt not being used as the last instruction at line: %d", linenumber)
-            else: haltFlag = True
+            raise Exception("hlt not being used as the last instruction at line: %d", linenumber)
 
         #for other instructions
         #6 categories: instr is a temporary variable for easier processing
