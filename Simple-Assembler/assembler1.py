@@ -485,3 +485,6 @@ def main():
     #printing out to STDOUT
     for i in output_list:
         print(i)
+
+        
+main()
