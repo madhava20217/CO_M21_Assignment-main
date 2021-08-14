@@ -113,15 +113,15 @@ def isValidTypeA(operationArr):
         tempReg = operationArr[i].strip()
         if(tempReg not in regDict.keys()):                          #if it is not in the list of registers, three cases ensue
             if(tempReg in var_dict.keys()):                                     #it is a variable
-                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: {}".format(linenumber))
             if(tempReg in label_dict.keys()):
-                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: {}".format(linenumber))
             if(tempReg[0] == '$'):
-                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: {}".format(linenumber))
             else:
-                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: {}".format(linenumber))
         if(tempReg == "FLAGS"):                                         #if it is the FLAGS register
-                raise Exception("Illegal use of FLAGS register at line: ", linenumber)
+                raise Exception("Illegal use of FLAGS register at line: {}".format(linenumber))
             
     return True
 
@@ -441,12 +441,12 @@ def main():
 
     #handling last element not halt exception
     if(input_arr[-1].strip() != 'hlt'):
-        raise Exception("hlt not being used as the last instruction at line: %d", memaddresscount)
+        raise Exception("hlt not being used as the last instruction at line: {}".format(memaddresscount))
 
     while(memaddresscount<(len(input_arr)-1)):
         linenumber = line_no[memaddresscount]
         if(input_arr[memaddresscount].strip() == 'hlt'):
-            raise Exception("hlt not being used as the last instruction at line: %d", linenumber)
+            raise Exception("hlt not being used as the last instruction at line:{}".format(linenumber))
 
         #for other instructions
         #6 categories: instr is a temporary variable for easier processing
