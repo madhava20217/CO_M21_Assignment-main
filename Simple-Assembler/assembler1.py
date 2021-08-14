@@ -444,7 +444,7 @@ def main():
     if(input_arr[-1].strip() != 'hlt'):
         raise Exception("hlt not being used as the last instruction at line: %d", memaddresscount)
 
-    while(memaddresscount<len(input_arr)):
+    while(memaddresscount<(len(input_arr)-1)):
         linenumber = line_no[memaddresscount]
         if(input_arr[memaddresscount].strip() == 'hlt'):
             if(haltFlag): raise Exception("hlt not being used as the last instruction at line: %d", linenumber)
@@ -470,13 +470,11 @@ def main():
         elif(instr[0] in instructionDictE.keys() and isValidTypeE(input_arr[memaddresscount])):
             output_list.append(typeEInstruction(input_arr[memaddresscount]))
 
-        elif(instr[0] == 'hlt' and not haltFlag):
-            output_list.append(typeFInstruction(input_arr[memaddresscount]))
-        
         else:
             raise Exception("Typos in instruction name or register name at memory location: %d", linenumber)
 
         memaddresscount+=1      #incrementing memaddresscount for the next iteration
+    output_list.append("10011" + 11*"0")
 
     #printing out to STDOUT
     for i in output_list:
