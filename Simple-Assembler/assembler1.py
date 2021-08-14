@@ -353,7 +353,9 @@ def main():
                 line_no.append(ctr)
                 ctr = ctr+1
             
-
+    if(len(input_arr) == 0):
+        raise Exception("Missing halt instruction at line: 1")
+        
     #working with variables:
     i = 0
     while(i < len(input_arr)):
