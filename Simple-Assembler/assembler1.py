@@ -431,12 +431,13 @@ def main():
         else:
             raise Exception("Typos in instruction name or register name at memory location: %d", linenumber)
 
+        memaddresscount+=1      #incrementing memaddresscount for the next iteration
+
 
     #handling last element not halt exception
     if(input_arr[-1].strip() != 'hlt'):
         raise Exception("Missing halt instruction at line: {}".format(line_no[len(line_no)-1]+1))
 
-    memaddresscount+=1      #incrementing memaddresscount for the next iteration
 
     output_list.append("10011" + 11*"0")
 
