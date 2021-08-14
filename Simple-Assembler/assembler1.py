@@ -248,31 +248,32 @@ def typeBInstruction(instruction):
     if word_list[1] in regDict and word_list[1] != "FLAGS":
         binary_equivalent += regDict[word_list[1]]
     elif word_list[1] == "FLAGS":
-        raise Exception("Illegal use of flag register at line: ".format(linenumber))
+        raise Exception("Illegal use of flag register at line: {}".format(linenumber))
     elif word_list[1] in var_dict:
-        raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     elif word_list[1] in label_dict:
-        raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     elif isValidImmediate(word_list[1]):
-        raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     else:
-        raise Exception("Typo in register name at line: ".format(linenumber))
+        raise Exception("Typo in register name at line: {}".format(linenumber))
     #third word
-    if word_list[2] in regDict and word_list[2] != "FLAGS":
-        binary_equivalent += regDict[word_list[2]]
-    elif word_list[2] == "FLAGS":
-        raise Exception("Illegal use of flag register at line: ".format(linenumber))
+    if word_list[2] == "FLAGS":
+        raise Exception("Illegal use of flag register at line: {}".format(linenumber))
     elif word_list[2] in var_dict:
-        raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     elif word_list[2] in label_dict:
-        raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
+    elif word_list[2] in regDict:
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     elif(word_list[2][0] != "$"):
-        raise Exception("General Syntax Error at line: ".format(linenumber))
+        raise Exception("General Syntax Error at line: {}".format(linenumber))
     elif isValidImmediate(word_list[2]):
+        word_list[2] = word_list[2][1:]
         temp = bin(int(word_list[2]))[2:]
         binary_equivalent += "{:08d}".format(int(temp))
     else:
-        raise Exception("Illegal Immediate values (less than 0 or more than 255)".format(linenumber))
+        raise Exception("Illegal Immediate values (less than 0 or more than 255) {}".format(linenumber))
     return binary_equivalent
 def typeCInstruction(instruction):
     instruction = instruction.strip()
@@ -286,41 +287,41 @@ def typeCInstruction(instruction):
     if word_list[1] in regDict and word_list[1] != "FLAGS":
         binary_equivalent += regDict[word_list[1]]
     elif word_list[1] == "FLAGS":
-        raise Exception("Illegal use of flag register at line: ".format(linenumber))
+        raise Exception("Illegal use of flag register at line: {}".format(linenumber))
     elif word_list[1] in var_dict:
-        raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     elif word_list[1] in label_dict:
-        raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     elif isValidImmediate(word_list[1]):
-        raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     else:
-        raise Exception("Typo in register name at line: ".format(linenumber))
+        raise Exception("Typo in register name at line: {}".format(linenumber))
     binary_equivalent += "00000"
     #3rd word
     if(word_list[0] == "mov"):
         if word_list[2] in regDict:
             binary_equivalent += regDict[word_list[2]]
         elif word_list[2] in var_dict:
-            raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+            raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
         elif word_list[2] in label_dict:
-            raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+            raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
         elif isValidImmediate(word_list[2]):
-            raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+            raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
         else:
-            raise Exception("Typo in register name at line: ".format(linenumber))
+            raise Exception("Typo in register name at line: {}".format(linenumber))
     else:
         if word_list[2] in regDict and word_list[2] != "FLAGS":
             binary_equivalent += regDict[word_list[2]]
         elif word_list[2] == "FLAGS":
-            raise Exception("Illegal use of flag register at line: ".format(linenumber))
+            raise Exception("Illegal use of flag register at line: {}".format(linenumber))
         elif word_list[2] in var_dict:
-            raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+            raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
         elif word_list[2] in label_dict:
-            raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+            raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
         elif isValidImmediate(word_list[2]):
-            raise Exception("Wrong syntax used for the instruction at line: ".format(linenumber))
+            raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
         else:
-            raise Exception("Typo in register name at line: ".format(linenumber))
+            raise Exception("Typo in register name at line: {}".format(linenumber))
     return binary_equivalent
 def isValidImmediate(immediate):
     if immediate[0] == "$":
