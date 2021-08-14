@@ -33,32 +33,6 @@ global label_dict
 label_dict = {}
 
 
-# takes in s(string) and size(int) returns binary string of size size
-def toBinary(s,size):
-    ans = ""
-    if(s.isnumeric()):
-        s = int(s)
-    else:
-        return "Invalid syntax"
-    while(s > 0):
-        if(s % 2 == 0):
-            ans = "0" + ans;
-        else:
-            ans = "1" + ans;
-        s = s//2
-
-    if(len(ans)==size):
-        return ans;
-    elif(len(ans) < size):
-        while(len(ans) != size):
-            ans = "0" + ans
-        return ans
-    else:
-        ans = ans[len(ans) - size:]
-        return ans
-    
-
-
 def typeAInstruction(x):
     '''Takes in input for type A instruction, tests if it is valid
     and returns the corresponding binary code for the instruction
@@ -113,15 +87,15 @@ def isValidTypeA(operationArr):
         tempReg = operationArr[i].strip()
         if(tempReg not in regDict.keys()):                          #if it is not in the list of registers, three cases ensue
             if(tempReg in var_dict.keys()):                                     #it is a variable
-                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: {}".format(linenumber))
             if(tempReg in label_dict.keys()):
-                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: {}".format(linenumber))
             if(tempReg[0] == '$'):
-                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: {}".format(linenumber))
             else:
-                raise Exception("Wrong syntax used for instructions at line: ", linenumber)
+                raise Exception("Wrong syntax used for instructions at line: {}".format(linenumber))
         if(tempReg == "FLAGS"):                                         #if it is the FLAGS register
-                raise Exception("Illegal use of FLAGS register at line: ", linenumber)
+                raise Exception("Illegal use of FLAGS register at line: {}".format(linenumber))
             
     return True
 
@@ -168,22 +142,22 @@ def typeDInstruction(line):
     binary = instructionDictD[ins[0]]
     if (ins[1] == "FLAGS"):
         #error invalid register
-        raise Exception("Illegal use of flag register at line: %d", linenumber)
+        raise Exception("Illegal use of flag register at line: {}".format(linenumber))
     elif(isValidVar(ins[1]) == True):
-        raise Exception("Wrong syntax used for the instruction at line: %d", linenumber)
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     elif(ins[1] in label_dict.keys()):
-        raise Exception("Wrong syntax used for the instruction at line: %d", linenumber)
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     elif(isValidImmediate(ins[1]) == True):
-        raise Exception("Wrong syntax used for the instruction at line: %d", linenumber)
+        raise Exception("Wrong syntax used for the instruction at line: {}".format(linenumber))
     elif (ins[1] not in regDict.keys()):
-        raise Exception("Typo in register name at line: %d", linenumber)
+        raise Exception("Typo in register name at line: {}".format(linenumber))
     else:
         binary = binary + regDict[ins[1]]
 
     if(ins[2] in label_dict.keys()):
-        raise Exception("Misuse of labels as variables at line: %d", linenumber)
+        raise Exception("Misuse of labels as variables at line: {}".format(linenumber))
     elif(isValidVar(ins[2]) == False):
-        raise Exception("Use of undefined Variable address at line: %d", linenumber)
+        raise Exception("Use of undefined Variable address at line: {}".format(linenumber))
     else:
         binary = binary + var_dict[ins[2]]
 
@@ -207,30 +181,14 @@ def typeEInstruction(line):
     binary = instructionDictE[ins[0]] + "000"
     if(isValidVar(ins[1]) == True):
         #error
-        raise Exception("misuse of variables as labels at line: %d", linenumber)
-    elif(validLabel(ins[1]) == False):
-        raise Exception("use of undefined labels at line: %d", linenumber)
+        raise Exception("misuse of variables as labels at line: {}".format(linenumber))
+    elif((ins[1] not in label_dict.keys())):
+        raise Exception("use of undefined labels at line: {}".format(linenumber))
     else:
         binary = binary + label_dict[ins[1]]
 
     return binary
 
-def typeFInstruction(ins):
-    '''Takes in string argument and returns its corresponding binary.
-    Optional: can also raise an error depending on the boolean value numberHalts
-
-    Operands:
-        1. String ins for the instruction
-        2. boolean numberHalts which checks if the number of halts are not >1, default value is true
-        
-    Possible Errors:
-    1. Wrong syntax used for instructions
-    2. hlt not being used as the last instruction'''
-    
-    if(ins.strip() == 'hlt'):
-        return "10011"+11*'0'
-    else:
-        raise Exception("Wrong syntax used for instruction at line: %d", linenumber)
 
 def typeBInstruction(instruction):
     instruction = instruction.strip()
@@ -412,7 +370,7 @@ def main():
     for i in range(0 , len(var_arr)):
         check = validVarInstruction(var_arr[i],var_loc+i)
         if(check == False):
-            raise Exception("Unsupported variable name format at line %d", var_line_no[i])
+            raise Exception("Unsupported variable name format at line {}".format(var_line_no[i]))
     #variables processed
     #Checking for labels and removing them from the instruction line if found
     for i in range(0,len(input_arr)):
@@ -440,12 +398,12 @@ def main():
 
     #handling last element not halt exception
     if(input_arr[-1].strip() != 'hlt'):
-        raise Exception("hlt not being used as the last instruction at line: %d", memaddresscount)
+        raise Exception("hlt not being used as the last instruction at line: {}".format(memaddresscount))
 
     while(memaddresscount<(len(input_arr)-1)):
         linenumber = line_no[memaddresscount]
         if(input_arr[memaddresscount].strip() == 'hlt'):
-            raise Exception("hlt not being used as the last instruction at line: %d", linenumber)
+            raise Exception("hlt not being used as the last instruction at line:{}".format(linenumber))
 
         #for other instructions
         #6 categories: instr is a temporary variable for easier processing
@@ -465,6 +423,9 @@ def main():
         
         elif(instr[0] in instructionDictE.keys() and isValidTypeE(input_arr[memaddresscount])):
             output_list.append(typeEInstruction(input_arr[memaddresscount]))
+        
+        elif(instr[0] in operandslist):
+            raise Exception("Wrong syntax used for instruction at line {}".format(linenumber))
 
         else:
             raise Exception("Typos in instruction name or register name at memory location: %d", linenumber)
