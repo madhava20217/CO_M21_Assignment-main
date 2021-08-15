@@ -322,6 +322,8 @@ def validLabel(label_name):
         return False
     elif label_name in label_dict:
         return False
+    elif label_name == "var":
+        return False
     else:
         for letter in label_name:
             if (not letter.isalnum() and letter != '_'):
