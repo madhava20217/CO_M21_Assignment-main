@@ -107,6 +107,7 @@ def validVarInstruction(ins,location):
     ins = ins.split()
     if(len(ins) != 2): return False
     if(ins[0] != 'var'): return False
+    if(ins[1] == 'var'): return False 
     if(ins[1] in regDict.keys()): return False
     if(ins[1] in var_dict.keys()): return False #multiple declaration of single variable
     if(ins[1] in operandslist): return False
