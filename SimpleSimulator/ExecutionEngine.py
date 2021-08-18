@@ -5,6 +5,8 @@ class ExecutionEngine:
 	
 	def execute(self,instr,cycle=0):
 		opcode = instr[0:5]
+		halted = False
+		pc = 
 		if(opcode == "00000"):
 			#
 		elif(opcode == "00001"):
@@ -14,9 +16,9 @@ class ExecutionEngine:
 		elif(opcode == "00011"):
 			#
 		elif(opcode == "00100"):
-			load(self, instr)
+			self.ld(instr)
 		elif(opcode == "00101"):
-			store(self, instr)
+			self.st(instr)
 		elif(opcode == "00110"):
 			#
 		elif(opcode == "00111"):
@@ -36,20 +38,33 @@ class ExecutionEngine:
 		elif(opcode == "01110"):
 			#
 		elif(opcode == "01111"):
-			#
+			if(self.jmp(instr)== True):
+				pc = instr[8:16]
 		elif(opcode == "10000"):
-			#
+			self.jlt(instr)
 		elif(opcode == "10001"):
-			#
+			self.jgt(instr)
 		elif(opcode == "10010"):
-			#
+			self.je(instr)
 		elif(opcode == "10011"):
 			#
 		
 		return [halted,pc]
 	
-	def load(self, instr):
-		#
+	def ld(self, instr):
+		#binary string to integer
+		reg_addr = int(instr[5:8],2)
+		mem_addr = int(instr[8:16],2)
+		#setting register value
+		self.register.setVal(reg_addr, self.memory.getData(mem_addr))
+
+	def st(self, instr):
+		#binary string to integer
+		reg_addr = int(instr[5:8],2)
+		mem_addr = int(instr[8:16],2)
+		#setting memory value
+		self.memory.setData(mem_addr, self.register.getVal(reg_addr))
 	
-	def store(self, instr):
-		#
+	def jmp(self, instr):
+		return True 
+		
