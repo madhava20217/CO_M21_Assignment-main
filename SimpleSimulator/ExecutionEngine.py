@@ -10,11 +10,9 @@ class ExecutionEngine:
 		pc = "{:08}".format(int(bin(int(pc,2)+1)[2:]))
 
 		if(opcode == "00000"):
-			#for add instruction
-			self.add(instr)
+			#
 		elif(opcode == "00001"):
-			#for sub instruction
-			self.sub(instr)
+			#
 		elif(opcode == "00010"):
 			self.mov_imm(instr)
 		elif(opcode == "00011"):
@@ -137,43 +135,3 @@ class ExecutionEngine:
 
 
 		
-	def add(instr):
-		'''Input: string operand
-			Output: adds two registers and checks for overflow
-		function for adding operands and storing result
-		have to check for overflow (+ve only)'''
-		outputreg = int(instr[5:8], 2)
-		regop1 = int(instr[8:11], 2)
-		regop2 = int(instr[11:14], 2)
-		regval1 = self.register.getVal(regop1)		#searching RF for value for 1
-		regval2 = self.register.getVal(regop2)		#searching RF for value for 2
-		sum = regval1 + regval2						#sum
-		overflow = False							#determines overflow
-		if len("{:016d}".format(int(bin(sum)[2:]))) > 16: overflow = True
-		if(overflow):
-			self.register.setVal(7, '0'*12+'1'+'0'*3)
-			#overflow set in register file
-		sum = sum[-1::-1]	#inverting
-		sum = sum[0:16]		#taking first 16 bits
-		sum = sum[-1::-1]	#inverting back
-		self.register.setVal(outputreg, sum)
-
-	def sub(instr):
-		'''Input: string operand
-		Output: subtracts two registers and checks for underflow
-		If underflowed, sets answer to 0 and sets overflow bit'''
-		outputreg = int(instr[5:8], 2)
-		regop1 = int(instr[8:11], 2)
-		regop2 = int(instr[11:14], 2)
-		regval1 = self.register.getVal(regop1)
-		regval2 = self.register.getVal(regop2)
-		difference = regval1 - regval2		#subtraction
-		if(difference<0):
-			difference = 0
-			self.register.setVal(7, '0'*12+'1'+'0'*3)	#setting FLAGS register overflow bit
-		#no OVERFLOW can occur since operands are whole number containing registers
-		#only need to check for underflow
-		self.register.setVal(outputreg, difference)
-
-
-
