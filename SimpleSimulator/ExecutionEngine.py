@@ -211,13 +211,14 @@ class ExecutionEngine:
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		product = regval1 * regval2
-		product = "{:016d}".format(int(bin(product)[2:]))
-		if len(product) > 16:
+		if product >= 2**16:
 			self.register.setVal(7, '0'*12+'1'+'0'*3)		#sets flag register
+			product = product%65535							#taking modulus
 		else:
 			self.register.setVal(7, '0'*16)					#in case no overflow, resetting FLAGS
-		product = product[-1:-17:-1]	#inverting and taking last 16 bits
-		product = product[-1::-1]	#inverting back
+		product = "{:016d}".format(int(bin(product)[2:]))
+		#product = product[-1:-17:-1]	#inverting and taking last 16 bits
+		#product = product[-1::-1]	#inverting back
 		self.register.setVal(outputreg, product)
 
 	def logicalxor(self, instr):
