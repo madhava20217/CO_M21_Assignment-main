@@ -115,12 +115,12 @@ class ExecutionEngine:
 	def rs(self, instr):
 		register1 = int(instr[5:8],2)
 		imm = int(instr[8:],2)
-		result = int(self.register.getVal(register1)) >> imm
+		result = int(self.register.getVal(register1),2) >> imm
 		self.register.setVal(register1,"{:016d}".format(int(bin(result)[2:])))
 	def ls(self, instr):
 		register1 = int(instr[5:8],2)
 		imm = int(instr[8:],2)
-		result = int(self.register.getVal(register1)) << imm
+		result = int(self.register.getVal(register1),2) << imm
 		self.register.setVal(register1,"{:016d}".format(int(bin(result)[2:])))
 	def mov_reg(self, instr):
 		register1 = int(instr[5:8],2)
@@ -129,23 +129,24 @@ class ExecutionEngine:
 	def divide(self, instr):
 		register1 = int(instr[5:8],2)
 		register2 = int(instr[5:8],2)
-		quotient = int(self.register.getVal(register1)) // int(self.register.getVal(register2))
+		quotient = int(self.register.getVal(register1),2) // int(self.register.getVal(register2),2)
 		self.register.setVal(register1,"{:016d}".format(int(bin(quotient)[2:])))
 	def invert(self, instr):
 		register1 = int(instr[5:8],2)
 		register2 = int(instr[5:8],2)
 		output = self.register.getVal(register2)
+		inverted_output = ""
 		for i in range(0,16):
 			if(output[i] == "0"):
-				output[i] = "1"
+				inverted_output+= "1"
 			elif (output[i] == "1"):
-				output[i] = "0"
+				inverted_output += "0"
 		self.register.setVal(register1,output)
 	def cmp(self, instr):
 		register1 = int(instr[5:8],2)
 		register2 = int(instr[5:8],2)
-		val1 = int(self.register.getVal(register1))
-		val2 = int(self.register.getVal(register2))
+		val1 = int(self.register.getVal(register1),2)
+		val2 = int(self.register.getVal(register2),2)
 		if val1 > val2:
 			flag = "{:016d}".format(int(bin(2)[2:]))
 		elif val1 < val2:
