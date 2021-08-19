@@ -221,7 +221,7 @@ class ExecutionEngine:
 		self.register.setVal(outputreg, xorval)
 		self.register.setVal(7, '0'*16)	#resetting FLAGS
 
-	def logicalOr(self, instr):
+	def logicalor(self, instr):
 		'''Input: takes string operand
 		Output: writes back to register file, sets overflow bit if required (doesn't)'''
 		outputreg = int(instr[5:8], 2)
