@@ -8,7 +8,6 @@ class ExecutionEngine:
 		halted = False
 		#pc increment by 1
 		pc = "{:08}".format(int(bin(int(pc,2)+1)[2:]))
-
 		if(opcode == "00000"):
 			#for add instruction
 			self.add(instr)
@@ -123,17 +122,17 @@ class ExecutionEngine:
 		result = int(self.register.getVal(register1),2) << imm
 		self.register.setVal(register1,"{:016d}".format(int(bin(result)[2:])))
 	def mov_reg(self, instr):
-		register1 = int(instr[5:8],2)
-		register2 = int(instr[5:8],2)
+		register1 = int(instr[10:13],2)
+		register2 = int(instr[13:],2)
 		self.register.setVal(register1,self.register.getVal(register2))
 	def divide(self, instr):
-		register1 = int(instr[5:8],2)
-		register2 = int(instr[5:8],2)
+		register1 = int(instr[10:13],2)
+		register2 = int(instr[13:],2)
 		quotient = int(self.register.getVal(register1),2) // int(self.register.getVal(register2),2)
 		self.register.setVal(register1,"{:016d}".format(int(bin(quotient)[2:])))
 	def invert(self, instr):
-		register1 = int(instr[5:8],2)
-		register2 = int(instr[5:8],2)
+		register1 = int(instr[10:13],2)
+		register2 = int(instr[13:],2)
 		output = self.register.getVal(register2)
 		inverted_output = ""
 		for i in range(0,16):
@@ -141,10 +140,10 @@ class ExecutionEngine:
 				inverted_output+= "1"
 			elif (output[i] == "1"):
 				inverted_output += "0"
-		self.register.setVal(register1,output)
+		self.register.setVal(register1,inverted_output)
 	def cmp(self, instr):
-		register1 = int(instr[5:8],2)
-		register2 = int(instr[5:8],2)
+		register1 = int(instr[10:13],2)
+		register2 = int(instr[13:],2)
 		val1 = int(self.register.getVal(register1),2)
 		val2 = int(self.register.getVal(register2),2)
 		if val1 > val2:
