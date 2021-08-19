@@ -15,65 +15,65 @@ class ExecutionEngine:
 			#for sub instruction
 			self.sub(instr)
 		elif(opcode == "00010"):
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.mov_imm(instr)
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "00011"):
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.mov_reg(instr)
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "00100"):
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.ld(instr)
-		elif(opcode == "00101"):
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
+		elif(opcode == "00101"):
 			self.st(instr)
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "00110"):
 			#for mul instruction
 			self.mul(instr)
 		elif(opcode == "00111"):
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.divide(instr)
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "01000"):
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.rs(instr)
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "01001"):
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.ls(instr)
-		elif(opcode == "01010"):
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
+		elif(opcode == "01010"):
 			#for xor operation
 			self.logicalxor(instr)
-		elif(opcode == "01011"):
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
+		elif(opcode == "01011"):
 			#for OR instruction
 			self.logicalor(instr)
-		elif(opcode == "01100"):
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
+		elif(opcode == "01100"):
 			#for AND instruction
 			self.logicaland(instr)
-		elif(opcode == "01101"):
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
+		elif(opcode == "01101"):
 			self.invert(instr)
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "01110"):
 			self.cmp(instr)
 		elif(opcode == "01111"):
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			if(self.jmp(instr)== True):
 				pc = instr[8:16]
-		elif(opcode == "10000"):
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
+		elif(opcode == "10000"):
 			if(self.jlt(instr)== True):
 				pc = instr[8:16]
-		elif(opcode == "10001"):
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
+		elif(opcode == "10001"):
 			if(self.jgt(instr)== True):
 				pc = instr[8:16]
-		elif(opcode == "10010"):
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
+		elif(opcode == "10010"):
 			if(self.je(instr)== True):
 				pc = instr[8:16]
-		elif(opcode == "10011"):
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
+		elif(opcode == "10011"):
 			halted = True
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		
 		return [halted,pc]
 	def ld(self, instr):
@@ -151,7 +151,7 @@ class ExecutionEngine:
 		elif val1 < val2:
 			flag = "{:016d}".format(int(bin(4)[2:]))
 		elif val1 == val2:
-			flag = "{:016d}".format(int(bin(8)[2:]))
+			flag = "{:016d}".format(int(bin(1)[2:]))
 		self.register.setVal(7,flag)
 
 
