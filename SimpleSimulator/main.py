@@ -11,15 +11,13 @@ def main():
 	PC = ProgramCounter("0"*8)
 	halted = False 
 	cycle = 0
-	
 	ctr = 0
 	for line in stdin:
-    	if(line == ''):
-        	break
-        else:
+		if(line == ''):
+			break
+		else:
 			memory.setData(line,ctr)
 			ctr+=1
-
 	while not halted:
 		inst = memory.fetch(PC.getVal(),cycle)
 		halted, nextPC = executionEngine.execute(inst,PC.getVal(),cycle)
