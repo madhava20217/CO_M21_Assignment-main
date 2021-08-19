@@ -14,8 +14,8 @@ def main():
 	
 	ctr = 0
 	for line in stdin:
-    	if(line == ''):
-        	break
+		if(line == ''):
+			break
         else:
 			memory.setData(line,ctr)
 			ctr+=1
@@ -28,5 +28,5 @@ def main():
 		PC.update(nextPC)
 		cycle += 1
 	
-	if __name__ == '__main__':
-		main()
+if __name__ == '__main__':
+	main()
