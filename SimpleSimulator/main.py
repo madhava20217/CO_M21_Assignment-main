@@ -19,12 +19,13 @@ def main():
 			memory.setData(ctr, line)
 			ctr+=1
 	while not halted:
-		inst = memory.fetch(PC.getVal(),cycle)
+		inst = memory.getData(int(PC.getVal(),2))
 		halted, nextPC = executionEngine.execute(inst,PC.getVal(),cycle)
 		PC.dump()
 		registerFile.dump()
 		PC.update(nextPC)
 		cycle += 1
+	memory.dump()
 	
-	if __name__ == '__main__':
-		main()
+if __name__ == '__main__':
+	main()
