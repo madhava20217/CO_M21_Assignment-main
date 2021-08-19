@@ -16,45 +16,60 @@ class ExecutionEngine:
 			#for sub instruction
 			self.sub(instr)
 		elif(opcode == "00010"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.mov_imm(instr)
 		elif(opcode == "00011"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.mov_reg(instr)
 		elif(opcode == "00100"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.ld(instr)
 		elif(opcode == "00101"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.st(instr)
 		elif(opcode == "00110"):
 			#for mul instruction
 			self.mul(instr)
 		elif(opcode == "00111"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.divide(instr)
 		elif(opcode == "01000"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.rs(instr)
 		elif(opcode == "01001"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.ls(instr)
 		elif(opcode == "01010"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			#for xor operation
 			self.logicalxor(instr)
 		elif(opcode == "01011"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			#for OR instruction
 			self.logicalor(instr)
 		elif(opcode == "01100"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			#for AND instruction
 			self.logicaland(instr)
 		elif(opcode == "01101"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.invert(instr)
 		elif(opcode == "01110"):
 			self.cmp(instr)
 		elif(opcode == "01111"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			if(self.jmp(instr)== True):
 				pc = instr[8:16]
 		elif(opcode == "10000"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			if(self.jlt(instr)== True):
 				pc = instr[8:16]
 		elif(opcode == "10001"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			if(self.jgt(instr)== True):
 				pc = instr[8:16]
 		elif(opcode == "10010"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			if(self.je(instr)== True):
 				pc = instr[8:16]
 		elif(opcode == "10011"):
@@ -93,30 +108,30 @@ class ExecutionEngine:
 		#vlge
 		if(flags[-1] == '1'): return True
 		else: return False
-	def mov_imm(instr):
+	def mov_imm(self, instr):
 		register1 = int(instr[5:8],2)
 		imm = int(instr[8:],2)
 		self.register.setVal(register1,"{:016d}".format(int(bin(imm)[2:])))
-	def rs(instr):
+	def rs(self, instr):
 		register1 = int(instr[5:8],2)
 		imm = int(instr[8:],2)
 		result = int(self.register.getVal(register1)) >> imm
 		self.register.setVal(register1,"{:016d}".format(int(bin(result)[2:])))
-	def ls(instr):
+	def ls(self, instr):
 		register1 = int(instr[5:8],2)
 		imm = int(instr[8:],2)
 		result = int(self.register.getVal(register1)) << imm
 		self.register.setVal(register1,"{:016d}".format(int(bin(result)[2:])))
-	def mov_reg(instr):
+	def mov_reg(self, instr):
 		register1 = int(instr[5:8],2)
 		register2 = int(instr[5:8],2)
 		self.register.setVal(register1,self.register.getVal(register2))
-	def divide(instr):
+	def divide(self, instr):
 		register1 = int(instr[5:8],2)
 		register2 = int(instr[5:8],2)
 		quotient = int(self.register.getVal(register1)) // int(self.register.getVal(register2))
 		self.register.setVal(register1,"{:016d}".format(int(bin(quotient)[2:])))
-	def invert(instr):
+	def invert(self, instr):
 		register1 = int(instr[5:8],2)
 		register2 = int(instr[5:8],2)
 		output = self.register.getVal(register2)
@@ -126,12 +141,11 @@ class ExecutionEngine:
 			elif (output[i] == "1"):
 				output[i] = "0"
 		self.register.setVal(register1,output)
-	def cmp(instr):
+	def cmp(self, instr):
 		register1 = int(instr[5:8],2)
 		register2 = int(instr[5:8],2)
 		val1 = int(self.register.getVal(register1))
 		val2 = int(self.register.getVal(register2))
-		flag
 		if val1 > val2:
 			flag = "{:016d}".format(int(bin(2)[2:]))
 		elif val1 < val2:
