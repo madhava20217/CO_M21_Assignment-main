@@ -11,7 +11,6 @@ def main():
 	PC = ProgramCounter("0"*8)
 	halted = False 
 	cycle = 0
-	
 	ctr = 0
 	for line in stdin:
 		if(line == ''):
@@ -19,7 +18,6 @@ def main():
 		else:
 			memory.setData(ctr, line)
 			ctr+=1
-
 	while not halted:
 		inst = memory.fetch(PC.getVal(),cycle)
 		halted, nextPC = executionEngine.execute(inst,PC.getVal(),cycle)
@@ -28,5 +26,5 @@ def main():
 		PC.update(nextPC)
 		cycle += 1
 	
-if __name__ == '__main__':
-	main()
+	if __name__ == '__main__':
+		main()
