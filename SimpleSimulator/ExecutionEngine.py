@@ -164,8 +164,8 @@ class ExecutionEngine:
 		outputreg = int(instr[5:8], 2)
 		regop1 = int(instr[8:11], 2)
 		regop2 = int(instr[11:14], 2)
-		regval1 = self.register.getVal(regop1)		#searching RF for value for 1
-		regval2 = self.register.getVal(regop2)		#searching RF for value for 2
+		regval1 = int(self.register.getVal(regop1),2)
+		regval2 = int(self.register.getVal(regop2),2)
 		sum = regval1 + regval2						#sum
 		sum = "{:016d}".format(int(bin(sum)[2:]))
 		if len(sum)>16:
@@ -184,8 +184,8 @@ class ExecutionEngine:
 		outputreg = int(instr[5:8], 2)
 		regop1 = int(instr[8:11], 2)
 		regop2 = int(instr[11:14], 2)
-		regval1 = self.register.getVal(regop1)
-		regval2 = self.register.getVal(regop2)
+		regval1 = int(self.register.getVal(regop1),2)
+		regval2 = int(self.register.getVal(regop2),2)
 		difference = regval1 - regval2		#subtraction
 		if(difference<0):
 			difference = 0
@@ -207,16 +207,17 @@ class ExecutionEngine:
 		outputreg = int(instr[5:8], 2)
 		regop1 = int(instr[8:11], 2)
 		regop2 = int(instr[11:14], 2)
-		regval1 = self.register.getVal(regop1)
-		regval2 = self.register.getVal(regop2)
+		regval1 = int(self.register.getVal(regop1),2)
+		regval2 = int(self.register.getVal(regop2),2)
 		product = regval1 * regval2
-		product = "{:016d}".format(int(bin(product)[2:]))
-		if len(product) > 16:
+		if product >= 2**16:
 			self.register.setVal(7, '0'*12+'1'+'0'*3)		#sets flag register
+			product = product%65535							#taking modulus
 		else:
 			self.register.setVal(7, '0'*16)					#in case no overflow, resetting FLAGS
-		product = product[-1:-17:-1]	#inverting and taking last 16 bits
-		product = product[-1::-1]	#inverting back
+		product = "{:016d}".format(int(bin(product)[2:]))
+		#product = product[-1:-17:-1]	#inverting and taking last 16 bits
+		#product = product[-1::-1]	#inverting back
 		self.register.setVal(outputreg, product)
 
 	def logicalxor(self, instr):
@@ -225,8 +226,8 @@ class ExecutionEngine:
 		outputreg = int(instr[5:8], 2)
 		regop1 = int(instr[8:11], 2)
 		regop2 = int(instr[11:14], 2)
-		regval1 = self.register.getVal(regop1)
-		regval2 = self.register.getVal(regop2)
+		regval1 = int(self.register.getVal(regop1),2)
+		regval2 = int(self.register.getVal(regop2),2)
 		xorval = regval1^regval2
 		xorval = "{:016d}".format(int(bin(xorval)[2:]))
 		if(len(xorval>16)):self.register.setVal(7, '0'*12+'1'+'0'*3)
@@ -241,8 +242,8 @@ class ExecutionEngine:
 		outputreg = int(instr[5:8], 2)
 		regop1 = int(instr[8:11], 2)
 		regop2 = int(instr[11:14], 2)
-		regval1 = self.register.getVal(regop1)
-		regval2 = self.register.getVal(regop2)
+		regval1 = int(self.register.getVal(regop1),2)
+		regval2 = int(self.register.getVal(regop2),2)
 		orval = regval1|regval2
 		orval = "{:016d}".format(int(bin(orval)[2:]))
 		#since OR can't set overflow bits, no overflow checks implemented
@@ -256,8 +257,8 @@ class ExecutionEngine:
 		outputreg = int(instr[5:8], 2)
 		regop1 = int(instr[8:11], 2)
 		regop2 = int(instr[11:14], 2)
-		regval1 = self.register.getVal(regop1)
-		regval2 = self.register.getVal(regop2)
+		regval1 = int(self.register.getVal(regop1),2)
+		regval2 = int(self.register.getVal(regop2),2)
 		andval = regval1&regval2
 		andval = "{:016d}".format(int(bin(andval)[2:]))
 		self.register.setVal(outputreg, andval)
