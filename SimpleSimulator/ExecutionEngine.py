@@ -167,14 +167,19 @@ class ExecutionEngine:
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		sum = regval1 + regval2						#sum
-		sum = "{:016d}".format(int(bin(sum)[2:]))
-		if len(sum)>16:
+		if sum >= 2**16:
 			self.register.setVal(7, '0'*12+'1'+'0'*3)
-			#overflow set in register file
+			sum = sum%2**16
 		else:
 			self.register.setVal(7, '0'*16)			#in case no overflow, resetting FLAGS
-		sum = sum[-1:-17:-1]	#inverting and taking last 16 bits
-		sum = sum[-1::-1]	#inverting back
+		sum = "{:016d}".format(int(bin(sum)[2:]))
+		#if len(sum)>16:
+			#self.register.setVal(7, '0'*12+'1'+'0'*3)
+			#overflow set in register file
+		#else:
+			#self.register.setVal(7, '0'*16)			#in case no overflow, resetting FLAGS
+		#sum = sum[-1:-17:-1]	#inverting and taking last 16 bits
+		#sum = sum[-1::-1]	#inverting back
 		self.register.setVal(outputreg, sum)
 
 	def sub(self, instr):
