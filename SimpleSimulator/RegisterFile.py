@@ -14,4 +14,5 @@ class RegisterFile:
 	def dump(self):
 		for r in self.reg:
 			print(r,end = " ")
+		print()
 		

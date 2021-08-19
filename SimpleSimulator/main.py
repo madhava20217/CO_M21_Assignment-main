@@ -16,8 +16,8 @@ def main():
 	for line in stdin:
 		if(line == ''):
 			break
-        else:
-			memory.setData(line,ctr)
+		else:
+			memory.setData(ctr, line)
 			ctr+=1
 
 	while not halted:
