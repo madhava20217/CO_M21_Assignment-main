@@ -12,4 +12,4 @@ class ProgramCounter:
 		self.pc = val
 	
 	def dump(self):
-		#to do
+		print(self.pc, end = " ")

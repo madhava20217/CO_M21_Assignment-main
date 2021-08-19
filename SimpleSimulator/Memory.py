@@ -11,7 +11,8 @@ class Memory:
 		self.mem[index] = val
 
 	def dump(self):
-		#to do
+		for m in self.mem:
+			print(m)
 
 	
 

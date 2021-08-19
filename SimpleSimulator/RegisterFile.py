@@ -12,5 +12,6 @@ class RegisterFile:
 		self.reg[index] = val
 	
 	def dump(self):
-		#to do
+		for r in self.reg:
+			print(r,end = " ")
 		
