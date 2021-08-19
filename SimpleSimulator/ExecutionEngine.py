@@ -15,65 +15,66 @@ class ExecutionEngine:
 			#for sub instruction
 			self.sub(instr)
 		elif(opcode == "00010"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.mov_imm(instr)
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "00011"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.mov_reg(instr)
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "00100"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.ld(instr)
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "00101"):
-			self.st(instr)
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
+			self.st(instr)
 		elif(opcode == "00110"):
 			#for mul instruction
 			self.mul(instr)
 		elif(opcode == "00111"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.divide(instr)
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "01000"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			self.rs(instr)
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "01001"):
-			self.ls(instr)
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
+			self.ls(instr)
 		elif(opcode == "01010"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			#for xor operation
 			self.logicalxor(instr)
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "01011"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			#for OR instruction
 			self.logicalor(instr)
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "01100"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			#for AND instruction
 			self.logicaland(instr)
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "01101"):
-			self.invert(instr)
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
+			self.invert(instr)
 		elif(opcode == "01110"):
 			self.cmp(instr)
 		elif(opcode == "01111"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			if(self.jmp(instr)== True):
 				pc = instr[8:16]
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "10000"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			if(self.jlt(instr)== True):
 				pc = instr[8:16]
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "10001"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			if(self.jgt(instr)== True):
 				pc = instr[8:16]
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "10010"):
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 			if(self.je(instr)== True):
 				pc = instr[8:16]
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "10011"):
-			halted = True
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
+			halted = True
+		
 		return [halted,pc]
 	def ld(self, instr):
 		#binary string to integer
@@ -150,7 +151,7 @@ class ExecutionEngine:
 		elif val1 < val2:
 			flag = "{:016d}".format(int(bin(4)[2:]))
 		elif val1 == val2:
-			flag = "{:016d}".format(int(bin(1)[2:]))
+			flag = "{:016d}".format(int(bin(8)[2:]))
 		self.register.setVal(7,flag)
 
 
@@ -160,9 +161,9 @@ class ExecutionEngine:
 			Output: adds two registers and checks for overflow
 		function for adding operands and storing result
 		have to check for overflow (+ve only)'''
-		outputreg = int(instr[8:11], 2)
-		regop1 = int(instr[11:14], 2)
-		regop2 = int(instr[14:], 2)
+		outputreg = int(instr[7:10], 2)
+		regop1 = int(instr[10:13], 2)
+		regop2 = int(instr[13:], 2)
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		sum = regval1 + regval2						#sum
@@ -185,9 +186,9 @@ class ExecutionEngine:
 		'''Input: string operand
 		Output: subtracts two registers and checks for underflow
 		If underflowed, sets answer to 0 and sets overflow bit'''
-		outputreg = int(instr[8:11], 2)
-		regop1 = int(instr[11:14], 2)
-		regop2 = int(instr[14:], 2)
+		outputreg = int(instr[7:10], 2)
+		regop1 = int(instr[10:13], 2)
+		regop2 = int(instr[13:], 2)
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		difference = regval1 - regval2		#subtraction
@@ -208,15 +209,15 @@ class ExecutionEngine:
 		'''Input: string operand
 		Output: multiplies the two numbers in the registers,
 		sets the overflow bit if needed'''
-		outputreg = int(instr[8:11], 2)
-		regop1 = int(instr[11:14], 2)
-		regop2 = int(instr[14:], 2)
+		outputreg = int(instr[7:10], 2)
+		regop1 = int(instr[10:13], 2)
+		regop2 = int(instr[13:], 2)
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		product = regval1 * regval2
 		if product >= 2**16:
 			self.register.setVal(7, '0'*12+'1'+'0'*3)		#sets flag register
-			product = product%65535							#taking modulus
+			product = product%65536							#taking modulus
 		else:
 			self.register.setVal(7, '0'*16)					#in case no overflow, resetting FLAGS
 		product = "{:016d}".format(int(bin(product)[2:]))
@@ -227,9 +228,9 @@ class ExecutionEngine:
 	def logicalxor(self, instr):
 		'''Input: string operand
 		output: takes xor of the two numbers in the registers, sets overflow bits if needed'''
-		outputreg = int(instr[8:11], 2)
-		regop1 = int(instr[11:14], 2)
-		regop2 = int(instr[14:], 2)
+		outputreg = int(instr[7:10], 2)
+		regop1 = int(instr[10:13], 2)
+		regop2 = int(instr[13:], 2)
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		xorval = regval1^regval2
@@ -243,9 +244,9 @@ class ExecutionEngine:
 	def logicalor(self, instr):
 		'''Input: takes string operand
 		Output: writes back to register file, sets overflow bit if required (doesn't)'''
-		outputreg = int(instr[8:11], 2)
-		regop1 = int(instr[11:14], 2)
-		regop2 = int(instr[14:], 2)
+		outputreg = int(instr[7:10], 2)
+		regop1 = int(instr[10:13], 2)
+		regop2 = int(instr[13:], 2)
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		orval = regval1|regval2
@@ -258,9 +259,9 @@ class ExecutionEngine:
 		'''Input: takes string operand
 		Output: writes back to register file after computing AND of the two registers
 		Does not set overflow bits, since it can't overflow with bitwise operations'''
-		outputreg = int(instr[8:11], 2)
-		regop1 = int(instr[11:14], 2)
-		regop2 = int(instr[14:], 2)
+		outputreg = int(instr[7:10], 2)
+		regop1 = int(instr[10:13], 2)
+		regop2 = int(instr[13:], 2)
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		andval = regval1&regval2
