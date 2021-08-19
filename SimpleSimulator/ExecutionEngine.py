@@ -162,9 +162,9 @@ class ExecutionEngine:
 			Output: adds two registers and checks for overflow
 		function for adding operands and storing result
 		have to check for overflow (+ve only)'''
-		outputreg = int(instr[5:8], 2)
-		regop1 = int(instr[8:11], 2)
-		regop2 = int(instr[11:14], 2)
+		outputreg = int(instr[8:11], 2)
+		regop1 = int(instr[11:14], 2)
+		regop2 = int(instr[14:], 2)
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		sum = regval1 + regval2						#sum
@@ -182,9 +182,9 @@ class ExecutionEngine:
 		'''Input: string operand
 		Output: subtracts two registers and checks for underflow
 		If underflowed, sets answer to 0 and sets overflow bit'''
-		outputreg = int(instr[5:8], 2)
-		regop1 = int(instr[8:11], 2)
-		regop2 = int(instr[11:14], 2)
+		outputreg = int(instr[8:11], 2)
+		regop1 = int(instr[11:14], 2)
+		regop2 = int(instr[14:], 2)
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		difference = regval1 - regval2		#subtraction
@@ -205,9 +205,9 @@ class ExecutionEngine:
 		'''Input: string operand
 		Output: multiplies the two numbers in the registers,
 		sets the overflow bit if needed'''
-		outputreg = int(instr[5:8], 2)
-		regop1 = int(instr[8:11], 2)
-		regop2 = int(instr[11:14], 2)
+		outputreg = int(instr[8:11], 2)
+		regop1 = int(instr[11:14], 2)
+		regop2 = int(instr[14:], 2)
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		product = regval1 * regval2
@@ -224,14 +224,14 @@ class ExecutionEngine:
 	def logicalxor(self, instr):
 		'''Input: string operand
 		output: takes xor of the two numbers in the registers, sets overflow bits if needed'''
-		outputreg = int(instr[5:8], 2)
-		regop1 = int(instr[8:11], 2)
-		regop2 = int(instr[11:14], 2)
+		outputreg = int(instr[8:11], 2)
+		regop1 = int(instr[11:14], 2)
+		regop2 = int(instr[14:], 2)
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		xorval = regval1^regval2
 		xorval = "{:016d}".format(int(bin(xorval)[2:]))
-		if(len(xorval>16)):self.register.setVal(7, '0'*12+'1'+'0'*3)
+		#if(len(xorval>16)):self.register.setVal(7, '0'*12+'1'+'0'*3)
 		xorval = xorval[-1:-17:-1]	#taking first 16 bits
 		xorval = xorval[-1::-1]	
 		self.register.setVal(outputreg, xorval)
@@ -240,9 +240,9 @@ class ExecutionEngine:
 	def logicalor(self, instr):
 		'''Input: takes string operand
 		Output: writes back to register file, sets overflow bit if required (doesn't)'''
-		outputreg = int(instr[5:8], 2)
-		regop1 = int(instr[8:11], 2)
-		regop2 = int(instr[11:14], 2)
+		outputreg = int(instr[8:11], 2)
+		regop1 = int(instr[11:14], 2)
+		regop2 = int(instr[14:], 2)
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		orval = regval1|regval2
@@ -255,9 +255,9 @@ class ExecutionEngine:
 		'''Input: takes string operand
 		Output: writes back to register file after computing AND of the two registers
 		Does not set overflow bits, since it can't overflow with bitwise operations'''
-		outputreg = int(instr[5:8], 2)
-		regop1 = int(instr[8:11], 2)
-		regop2 = int(instr[11:14], 2)
+		outputreg = int(instr[8:11], 2)
+		regop1 = int(instr[11:14], 2)
+		regop2 = int(instr[14:], 2)
 		regval1 = int(self.register.getVal(regop1),2)
 		regval2 = int(self.register.getVal(regop2),2)
 		andval = regval1&regval2
