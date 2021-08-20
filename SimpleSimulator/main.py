@@ -17,7 +17,7 @@ def main():
 		if(line == ''):
 			break
 		else:
-			memory.setData(ctr, line.strip())
+			memory.setDataInput(ctr, line.strip())
 			ctr+=1
 	while not halted:
 		inst = memory.getData(int(PC.getVal(),2),cycle)

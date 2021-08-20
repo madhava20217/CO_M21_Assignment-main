@@ -26,6 +26,7 @@ class Memory:
 		plt.xlabel('Cycle')
 		plt.ylabel('Memory Address')
 		plt.show()
-	
+	def setDataInput(self, index, val):
+		self.mem[index] = val
 
 
