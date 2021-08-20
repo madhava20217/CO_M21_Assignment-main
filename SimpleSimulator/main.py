@@ -4,6 +4,7 @@ from RegisterFile import RegisterFile
 from ExecutionEngine import ExecutionEngine
 from sys import stdin
 
+
 def main():
 	memory = Memory()
 	registerFile = RegisterFile()
@@ -19,13 +20,14 @@ def main():
 			memory.setData(ctr, line.strip())
 			ctr+=1
 	while not halted:
-		inst = memory.getData(int(PC.getVal(),2))
+		inst = memory.getData(int(PC.getVal(),2),cycle)
 		halted, nextPC = executionEngine.execute(inst,PC.getVal(),cycle)
 		PC.dump()
 		registerFile.dump()
 		PC.update(nextPC)
 		cycle += 1
 	memory.dump()
-	
+	memory.scatterPlot()
+
 if __name__ == '__main__':
 	main()

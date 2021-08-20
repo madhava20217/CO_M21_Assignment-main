@@ -3,7 +3,7 @@ class ExecutionEngine:
 		self.memory = memory
 		self.register = register
 	
-	def execute(self,instr,pc,cycle=0):
+	def execute(self,instr,pc,cycle):
 		opcode = instr[0:5]
 		halted = False
 		#pc increment by 1
@@ -21,10 +21,10 @@ class ExecutionEngine:
 			self.mov_reg(instr)
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "00100"):
-			self.ld(instr)
+			self.ld(instr,cycle)
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "00101"):
-			self.st(instr)
+			self.st(instr,cycle)
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "00110"):
 			#for mul instruction
@@ -34,7 +34,7 @@ class ExecutionEngine:
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "01000"):
 			self.rs(instr)
-			self.register.setVal(7, '0'*16)					#resetting FLAGS
+			self.register.setVal(7, '0'*1)					#resetting FLAGS
 		elif(opcode == "01001"):
 			self.ls(instr)
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
@@ -76,19 +76,19 @@ class ExecutionEngine:
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		
 		return [halted,pc]
-	def ld(self, instr):
+	def ld(self, instr,cycle):
 		#binary string to integer
 		reg_addr = int(instr[5:8],2)
 		mem_addr = int(instr[8:16],2)
 		#setting register value
-		self.register.setVal(reg_addr, self.memory.getData(mem_addr))
+		self.register.setVal(reg_addr, self.memory.getData(mem_addr,cycle))
 
-	def st(self, instr):
+	def st(self, instr,cycle):
 		#binary string to integer
 		reg_addr = int(instr[5:8],2)
 		mem_addr = int(instr[8:16],2)
 		#setting memory value
-		self.memory.setData(mem_addr, self.register.getVal(reg_addr))
+		self.memory.setData(mem_addr, self.register.getVal(reg_addr),cycle)
 	def jmp(self, instr):
 		return True 
 		
