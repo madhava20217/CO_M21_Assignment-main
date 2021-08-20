@@ -9,10 +9,9 @@ class Memory:
 	
 	def setData(self, index, val):
 		self.mem[index] = val
-
 	def dump(self):
 		for m in self.mem:
 			print(m)
-
 	
+
 
