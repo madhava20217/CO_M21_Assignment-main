@@ -1,6 +1,8 @@
 class Memory:
 	def __init__(self):
 		self.mem = ["0"*16]*256
+		self.x = []
+		self.y = []
 		#input?
 
 	def getData(self,index):
