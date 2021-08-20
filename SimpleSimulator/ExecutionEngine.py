@@ -128,8 +128,12 @@ class ExecutionEngine:
 	def divide(self, instr):
 		register1 = int(instr[10:13],2)
 		register2 = int(instr[13:],2)
-		quotient = int(self.register.getVal(register1),2) // int(self.register.getVal(register2),2)
-		self.register.setVal(register1,"{:016d}".format(int(bin(quotient)[2:])))
+		val1 = int(self.register.getVal(register1),2)
+		val2 = int(self.register.getVal(register2),2)
+		quotient = val1 // val2
+		remainder = val1 % val2
+		self.register.setVal(0,"{:016d}".format(int(bin(quotient)[2:])))
+		self.register.setVal(1,"{:016d}".format(int(bin(remainder)[2:])))
 	def invert(self, instr):
 		register1 = int(instr[10:13],2)
 		register2 = int(instr[13:],2)
