@@ -34,7 +34,7 @@ class ExecutionEngine:
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "01000"):
 			self.rs(instr)
-			self.register.setVal(7, '0'*1)					#resetting FLAGS
+			self.register.setVal(7, '0'*16)					#resetting FLAGS
 		elif(opcode == "01001"):
 			self.ls(instr)
 			self.register.setVal(7, '0'*16)					#resetting FLAGS
